@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parametric Cutter Pro - Premium Rhino Plugin</title>
+    <title>Azure Cutter Pro - Premium Rhino Plugin</title>
     <style>
         * {
             margin: 0;
@@ -171,16 +171,6 @@
             background: var(--primary);
         }
 
-        .video-placeholder {
-            aspect-ratio: 16/9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            color: rgba(255, 255, 255, 0.3);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
         .video-container iframe {
             width: 100%;
             aspect-ratio: 16/9;
@@ -239,7 +229,7 @@
             line-height: 1.5;
         }
 
-        /* Gallery Section */
+        /* Gallery Section - Now Video Showcase */
         .gallery-section {
             padding: 120px 20px;
             background: var(--primary);
@@ -250,39 +240,18 @@
             color: var(--white);
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 1200px;
+        .video-showcase {
+            max-width: 980px;
             margin: 0 auto;
-        }
-
-        .gallery-item {
-            aspect-ratio: 4/3;
-            border-radius: 12px;
+            border-radius: 18px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        .gallery-item:hover {
-            transform: scale(0.98);
-        }
-
-        .gallery-item img {
+        .video-showcase iframe {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-item:first-child {
-            grid-column: span 2;
+            aspect-ratio: 16/9;
+            border: none;
         }
 
         /* Pricing Section */
@@ -502,14 +471,6 @@
                 font-size: 36px;
             }
 
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-item:first-child {
-                grid-column: span 1;
-            }
-
             .pricing-card.featured {
                 transform: scale(1);
             }
@@ -534,7 +495,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">YourBrand</a>
+            <a href="index.html" class="logo">Home</a>
             <ul class="nav-links">
                 <li><a href="index.html#plugins">All Plugins</a></li>
                 <li><a href="#features">Features</a></li>
@@ -547,9 +508,9 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-label">New Plugin</div>
-            <h1 class="hero-title">Parametric Cutter Pro</h1>
-            <p class="hero-subtitle">Beautiful cutters. Instantly adjustable. Professionally crafted.</p>
+            <div class="hero-label">Essential Plugin</div>
+            <h1 class="hero-title">Azure Cutter Pro</h1>
+            <p class="hero-subtitle">Generate perfect cutters in seconds with intelligent parameter controls.</p>
             <a href="#pricing" class="btn-primary">Get Started</a>
         </div>
     </section>
@@ -558,8 +519,7 @@
     <section class="video-section">
         <div class="video-container">
             <!-- REPLACE with your YouTube embed -->
-            <!-- <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
-            <div class="video-placeholder">▶️</div>
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
         </div>
     </section>
 
@@ -585,61 +545,21 @@
             </div>
 
             <div class="feature-card">
-                <span class="feature-icon">💾</span>
-                <h3 class="feature-title">Save Presets</h3>
-                <p class="feature-description">
-                    Store your favorite configurations for quick reuse across multiple projects.
-                </p>
-            </div>
-
-            <div class="feature-card">
                 <span class="feature-icon">📐</span>
                 <h3 class="feature-title">Perfect Precision</h3>
                 <p class="feature-description">
                     Mathematically accurate outputs with exact dimensions every single time.
                 </p>
             </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">🔄</span>
-                <h3 class="feature-title">Non-Destructive</h3>
-                <p class="feature-description">
-                    Edit parameters anytime without losing work. Full parametric workflow included.
-                </p>
-            </div>
-
-            <div class="feature-card">
-                <span class="feature-icon">🎨</span>
-                <h3 class="feature-title">Multiple Styles</h3>
-                <p class="feature-description">
-                    Choose from various design templates or create your own custom styles.
-                </p>
-            </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- Video Showcase Section -->
     <section class="gallery-section">
         <h2 class="section-title">See It In Action</h2>
-        
-        <div class="gallery-grid">
-            <!-- REPLACE with your actual images -->
-            <div class="gallery-item">
-                <!-- <img src="images/plugin1-screenshot1.jpg" alt="Example 1"> -->
-                <span>📐</span>
-            </div>
-            <div class="gallery-item">
-                <!-- <img src="images/plugin1-screenshot2.jpg" alt="Example 2"> -->
-                <span>⚙️</span>
-            </div>
-            <div class="gallery-item">
-                <!-- <img src="images/plugin1-screenshot3.jpg" alt="Example 3"> -->
-                <span>✨</span>
-            </div>
-            <div class="gallery-item">
-                <!-- <img src="images/plugin1-screenshot4.jpg" alt="Example 4"> -->
-                <span>🎯</span>
-            </div>
+        <div class="video-showcase">
+            <!-- REPLACE with your YouTube embed -->
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
         </div>
     </section>
 
@@ -653,7 +573,7 @@
         <div class="pricing-grid">
             <div class="pricing-card">
                 <p class="pricing-period">Quarterly</p>
-                <div class="pricing-amount">$49</div>
+                <div class="pricing-amount">₹9,999</div>
                 <p class="pricing-duration">per 3 months</p>
                 <ul class="pricing-features">
                     <li>Full plugin access</li>
@@ -668,7 +588,7 @@
             <div class="pricing-card featured">
                 <div class="pricing-badge">Best Value</div>
                 <p class="pricing-period">Annual</p>
-                <div class="pricing-amount">$149</div>
+                <div class="pricing-amount">₹31,999</div>
                 <p class="pricing-duration">per year • Save 20%</p>
                 <ul class="pricing-features">
                     <li>Full plugin access</li>
@@ -683,7 +603,7 @@
 
             <div class="pricing-card">
                 <p class="pricing-period">Half-Yearly</p>
-                <div class="pricing-amount">$89</div>
+                <div class="pricing-amount">₹16,666</div>
                 <p class="pricing-duration">per 6 months • Save 10%</p>
                 <ul class="pricing-features">
                     <li>Full plugin access</li>
@@ -737,7 +657,7 @@
 
     <!-- Footer -->
     <footer>
-        <p class="footer-text">© 2025 YourBrand. All rights reserved.</p>
+        <p class="footer-text">© 2025 Modelling Studio HUB. All rights reserved.</p>
         <p class="footer-text">Questions? Email us at <a href="mailto:support@yourplugins.com">support@yourplugins.com</a></p>
     </footer>
 </body>
