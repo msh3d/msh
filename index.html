@@ -325,6 +325,33 @@
             opacity: 0.3;
         }
 
+        /* Gallery Section (Added from azure-cutter-pro.html) */
+        .gallery-section {
+            padding: 120px 20px;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .gallery-section .section-title {
+            color: var(--white);
+            text-align: center;
+            margin-bottom: 80px; /* Override default margin */
+        }
+
+        .video-showcase {
+            max-width: 980px;
+            margin: 0 auto;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-showcase iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+
         /* Features Section */
         .features-section {
             background: var(--primary);
@@ -624,7 +651,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">Home</a>
@@ -637,7 +663,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Video Background -->
     <section class="hero">
         <div class="hero-video-bg">
             <iframe src="https://www.youtube.com/embed/8-JXkEX41_4?autoplay=1&mute=1&loop=1&playlist=8-JXkEX41_4&controls=0&showinfo=0&rel=0&modestbranding=1&fs=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -656,7 +681,13 @@
         </div>
     </section>
 
-    <!-- Plugins Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">See in Action</h2>
+        <div class="video-showcase">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/8-JXkEX41_4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
+
     <section id="plugins" class="plugin-section">
         <div class="section-header">
             <h2 class="section-title">Our Plugins</h2>
@@ -664,7 +695,6 @@
         </div>
 
         <div class="plugin-grid">
-            <!-- Plugin 1: Azure Cutter Pro -->
             <div class="plugin-card">
                 <div class="plugin-content">
                     <span class="plugin-label">Essential</span>
@@ -687,7 +717,6 @@
                 </div>
             </div>
 
-            <!-- Plugin 2: Pave Planner -->
             <div class="plugin-card">
                 <div class="plugin-content">
                     <span class="plugin-label">Popular</span>
@@ -702,7 +731,7 @@
                 <div class="plugin-visual" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                     <svg class="plugin-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="40" cy="40" r="10" stroke="white" stroke-width="2"/>
-                        <circle cx="80" cy="40" r="10" stroke="white" stroke-width="2"/>
+                        <circle cx="80"cy="40" r="10" stroke="white" stroke-width="2"/>
                         <circle cx="60" cy="60" r="10" stroke="white" stroke-width="2"/>
                         <circle cx="40" cy="80" r="10" stroke="white" stroke-width="2"/>
                         <circle cx="80" cy="80" r="10" stroke="white" stroke-width="2"/>
@@ -711,7 +740,6 @@
                 </div>
             </div>
 
-            <!-- Plugin 3: Auto Pave -->
             <div class="plugin-card">
                 <div class="plugin-content">
                     <span class="plugin-label">Advanced</span>
@@ -731,7 +759,6 @@
                 </div>
             </div>
 
-            <!-- Plugin 4: Curves to Diamonds -->
             <div class="plugin-card">
                 <div class="plugin-content">
                     <span class="plugin-label">Creative</span>
@@ -752,7 +779,6 @@
                 </div>
             </div>
 
-            <!-- Plugin 5: Single Line Pave -->
             <div class="plugin-card">
                 <div class="plugin-content">
                     <span class="plugin-label">Precision</span>
@@ -776,7 +802,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features" class="features-section">
         <div class="section-header">
             <h2 class="section-title">Why Choose Our Tools</h2>
@@ -829,7 +854,6 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
     <section id="pricing" class="pricing-section">
         <div class="section-header">
             <h2 class="section-title">Simple Pricing</h2>
@@ -880,7 +904,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact-section">
         <div class="section-header">
             <h2 class="section-title">Get in Touch with Us</h2>
@@ -941,7 +964,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <p class="footer-text">© 2025 Modelling Studio HUB. All rights reserved.</p>
