@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelling Studio HUB — Rhino Plugins for Jewellery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#131310;--ink2:#4a4a46;--ink3:#96958f;
+  --paper:#f8f5ef;--surface:#f0ece3;--white:#fff;
+  --gold:#8b6a1e;--gold-light:#c4a44a;--gold-bg:#f5edda;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'DM Mono',monospace;
+  --line:rgba(0,0,0,0.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--mono);background:var(--paper);color:var(--ink);overflow-x:hidden;font-size:13px;line-height:1.6}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;background:rgba(248,245,239,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:100}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:0.01em}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--ink2);text-decoration:none;font-size:11px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--ink);color:var(--white);padding:8px 18px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--gold)}
+
+/* ── HERO ── */
+.hero{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;min-height:88vh;border-bottom:1px solid var(--line)}
+.hero-left{padding:80px 60px 80px 80px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line)}
+.hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:32px}
+.hero-title{font-family:var(--serif);font-size:clamp(44px,5.5vw,72px);font-weight:300;line-height:1.08;letter-spacing:-.01em;color:var(--ink)}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-body{font-size:13px;color:var(--ink2);line-height:1.8;max-width:380px;margin-top:28px}
+.hero-actions{display:flex;gap:16px;margin-top:36px;align-items:center}
+.btn-primary{background:var(--ink);color:var(--white);padding:13px 28px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:background .2s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--gold)}
+.btn-ghost{color:var(--ink);font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;transition:color .2s,border-color .2s}
+.btn-ghost:hover{color:var(--gold);border-color:var(--gold)}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+.stat{padding:24px 0 0;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none;padding-left:24px}
+.stat-val{font-family:var(--serif);font-size:32px;font-weight:300;color:var(--ink)}
+.stat-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-top:4px}
+.hero-right{display:grid;grid-template-rows:1fr 1fr 1fr}
+.hero-right-item{padding:32px 40px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;cursor:default;transition:background .2s}
+.hero-right-item:last-child{border-bottom:none}
+.hero-right-item:hover{background:var(--surface)}
+.hri-num{font-size:10px;color:var(--ink3);margin-bottom:6px;letter-spacing:.1em}
+.hri-title{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink)}
+.hri-desc{font-size:11px;color:var(--ink2);line-height:1.6;margin-top:4px;max-width:240px}
+.hri-arrow{font-size:18px;color:var(--ink3);flex-shrink:0;margin-left:16px}
+
+/* ── MARQUEE ── */
+.marquee-strip{background:var(--ink);padding:12px 0;overflow:hidden;border-bottom:1px solid var(--line)}
+.marquee-track{display:flex;gap:48px;width:max-content;animation:marquee 22s linear infinite}
+.mitem{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);white-space:nowrap}
+.mitem span{color:var(--gold-light);margin:0 12px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTION COMMON ── */
+.section-header{padding:64px 80px 0;border-bottom:1px solid var(--line)}
+.section-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.section-title{font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);font-weight:300;line-height:1.1;letter-spacing:-.01em;padding-bottom:40px}
+.section-title em{font-style:italic;color:var(--gold)}
+
+/* ── TOOLS ── */
+#tools{border-bottom:1px solid var(--line)}
+.tools-intro{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.tools-intro-left{padding:64px 80px;border-right:1px solid var(--line)}
+.tools-intro-right{padding:64px 80px;display:flex;flex-direction:column;justify-content:space-between}
+.tools-intro-right p{font-size:14px;color:var(--ink2);line-height:1.8;max-width:400px}
+
+/* category filter */
+.cat-nav{display:flex;gap:0;border-bottom:1px solid var(--line);overflow-x:auto}
+.cat-btn{padding:14px 28px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);background:none;border:none;cursor:pointer;border-right:1px solid var(--line);transition:all .2s;white-space:nowrap;font-family:var(--mono)}
+.cat-btn:hover,.cat-btn.active{color:var(--ink);background:var(--surface)}
+.cat-btn.active{color:var(--gold)}
+
+/* tools grid */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}
+.tool-card{padding:36px 40px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;transition:background .18s;position:relative;text-decoration:none;color:inherit;display:block}
+.tool-card:nth-child(3n){border-right:none}
+.tool-card:hover{background:var(--surface)}
+.tool-card:hover .tool-arrow{color:var(--gold)}
+.tool-num{font-size:10px;color:var(--ink3);letter-spacing:.1em;margin-bottom:14px}
+.tool-cat-badge{display:inline-block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--line);color:var(--ink3);margin-bottom:14px}
+.tool-name{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.2;margin-bottom:10px;color:var(--ink)}
+.tool-desc{font-size:11px;color:var(--ink2);line-height:1.7}
+.tool-arrow{position:absolute;right:28px;bottom:28px;font-size:16px;color:var(--ink3);transition:color .18s}
+.tool-card.hidden{display:none}
+
+/* ── FEATURES ── */
+#features{border-bottom:1px solid var(--line)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.feat{padding:52px 48px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.feat:nth-child(3n){border-right:none}
+.feat-icon{width:32px;height:32px;margin-bottom:24px;color:var(--gold)}
+.feat-title{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:12px}
+.feat-text{font-size:12px;color:var(--ink2);line-height:1.8}
+
+/* ── HOW IT WORKS ── */
+#workflow{border-bottom:1px solid var(--line)}
+.workflow-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.wf-step{padding:48px 40px;border-right:1px solid var(--line)}
+.wf-step:last-child{border-right:none}
+.wf-n{font-family:var(--serif);font-size:48px;font-weight:300;color:rgba(0,0,0,0.07);line-height:1;margin-bottom:20px}
+.wf-title{font-family:var(--serif);font-size:18px;font-weight:400;margin-bottom:10px}
+.wf-text{font-size:11px;color:var(--ink2);line-height:1.8}
+
+/* ── PRICING ── */
+#pricing{border-bottom:1px solid var(--line)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.price-card{padding:52px 48px;border-right:1px solid var(--line);position:relative}
+.price-card:last-child{border-right:none}
+.price-card.featured{background:var(--ink);color:var(--white)}
+.price-card.featured .price-period,.price-card.featured .price-dur,.price-card.featured .price-feat-item{color:rgba(255,255,255,0.6)}
+.price-card.featured .price-feat-item::before{color:var(--gold-light)}
+.price-card.featured .btn-price{background:var(--gold);color:var(--white)}
+.price-card.featured .btn-price:hover{background:var(--gold-light)}
+.price-badge{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);border:1px solid var(--gold);padding:3px 12px;display:inline-block;margin-bottom:24px}
+.price-period{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.price-amount{font-family:var(--serif);font-size:clamp(36px,4vw,54px);font-weight:300;line-height:1;margin-bottom:4px}
+.price-dur{font-size:11px;color:var(--ink3);margin-bottom:32px}
+.price-feats{list-style:none;margin-bottom:36px}
+.price-feat-item{font-size:12px;color:var(--ink2);padding:10px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.price-feat-item::before{content:"—";color:var(--gold);flex-shrink:0}
+.btn-price{display:block;text-align:center;padding:13px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--white);transition:background .2s;border:none;cursor:pointer;width:100%}
+.btn-price:hover{background:var(--gold)}
+
+/* ── CONTACT ── */
+#contact{border-bottom:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr}
+.contact-left{padding:64px 80px;border-right:1px solid var(--line)}
+.contact-left p{font-size:13px;color:var(--ink2);line-height:1.8;margin-bottom:40px;max-width:360px}
+.contact-items{display:flex;flex-direction:column;gap:0}
+.contact-row{padding:20px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.contact-row:first-child{border-top:1px solid var(--line)}
+.cl-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.cl-val{font-size:12px;color:var(--ink)}
+.cl-val a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s,border-color .2s}
+.cl-val a:hover{color:var(--gold);border-color:var(--gold)}
+.contact-right{padding:64px 80px}
+.contact-right h3{font-family:var(--serif);font-size:26px;font-weight:300;margin-bottom:8px}
+.contact-right .sub{font-size:12px;color:var(--ink3);margin-bottom:36px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--surface);border:1px solid var(--line);padding:12px 14px;font-family:var(--mono);font-size:12px;color:var(--ink);outline:none;transition:border-color .2s;border-radius:0}
+.form-group input:focus,.form-group select,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:52px 80px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;border-top:1px solid var(--line)}
+.foot-col-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:20px}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.foot-links a{font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:var(--gold-light)}
+.foot-logo{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--white);margin-bottom:12px}
+.foot-logo span{color:var(--gold-light)}
+.foot-copy{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:60px 32px;border-right:none}
+  .tools-intro{grid-template-columns:1fr}
+  .tools-intro-left{border-right:none;padding:48px 32px}
+  .tools-intro-right{padding:32px 32px 48px}
+  .tools-grid{grid-template-columns:1fr 1fr}
+  .tool-card:nth-child(3n){border-right:1px solid var(--line)}
+  .tool-card:nth-child(2n){border-right:none}
+  .features-grid,.workflow-grid,.pricing-grid{grid-template-columns:1fr}
+  .feat,.wf-step,.price-card{border-right:none}
+  .contact-grid{grid-template-columns:1fr}
+  .contact-left{border-right:none;padding:48px 32px}
+  .contact-right{padding:48px 32px}
+  .section-header{padding:48px 32px 0}
+  .section-title{padding-bottom:32px}
+  footer{grid-template-columns:1fr;padding:48px 32px;gap:32px}
+  .form-row{grid-template-columns:1fr}
+  .nav-links{gap:16px}
+}
+@media(max-width:600px){
+  .tools-grid{grid-template-columns:1fr}
+  .tool-card{border-right:none!important}
+  .hero-left{padding:48px 24px}
+  .nav-inner{padding:0 20px}
+  .cat-btn{padding:12px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Modelling<span>Studio</span>HUB</a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Get Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-eyebrow">Rhino 3D Plugin Suite · Jewellery Design</div>
+      <h1 class="hero-title">Precision tools for<br><em>jewellery</em><br>modelling</h1>
+      <p class="hero-body">A professional plugin suite for Rhino 3D, purpose-built for jewellery designers and manufacturers. Automate stone placement, manage layers, calculate weights, and more — all within your existing workflow.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">View Pricing</a>
+        <a href="#tools" class="btn-ghost">Explore Tools</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">16+</div>
+        <div class="stat-label">Tools Included</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">Rhino 7–8</div>
+        <div class="stat-label">Compatible</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-item">
+      <div>
+        <div class="hri-num">01 — Stone Setting</div>
+        <div class="hri-title">Auto Pave Pro</div>
+        <div class="hri-desc">Automated pave stone placement across any surface or curve with precision control.</div>
+      </div>
+      <div class="hri-arrow">→</div>
+    </div>
+    <div class="hero-right-item">
+      <div>
+        <div class="hri-num">02 — Cutting</div>
+        <div class="hri-title">Azure Cutter Pro</div>
+        <div class="hri-desc">Precise stone seat cutting tool designed for clean, production-ready geometry.</div>
+      </div>
+      <div class="hri-arrow">→</div>
+    </div>
+    <div class="hero-right-item">
+      <div>
+        <div class="hri-num">03 — Workflow</div>
+        <div class="hri-title">Layer & Reporting</div>
+        <div class="hri-desc">A full suite of layer management, BOM reporting, and weight calculation tools.</div>
+      </div>
+      <div class="hri-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="mitem">Auto Pave Pro<span>·</span></span>
+    <span class="mitem">Azure Cutter Pro<span>·</span></span>
+    <span class="mitem">Pave Planner Pro<span>·</span></span>
+    <span class="mitem">Curves to Diamonds<span>·</span></span>
+    <span class="mitem">Diamond by Crv on Srf<span>·</span></span>
+    <span class="mitem">Metal Weight Calculation<span>·</span></span>
+    <span class="mitem">Layer BOM Report<span>·</span></span>
+    <span class="mitem">Pro Capture<span>·</span></span>
+    <span class="mitem">Layers for Jewellers<span>·</span></span>
+    <span class="mitem">Diamond Report By Circles<span>·</span></span>
+    <span class="mitem">Auto Pave Pro<span>·</span></span>
+    <span class="mitem">Azure Cutter Pro<span>·</span></span>
+    <span class="mitem">Pave Planner Pro<span>·</span></span>
+    <span class="mitem">Curves to Diamonds<span>·</span></span>
+    <span class="mitem">Diamond by Crv on Srf<span>·</span></span>
+    <span class="mitem">Metal Weight Calculation<span>·</span></span>
+    <span class="mitem">Layer BOM Report<span>·</span></span>
+    <span class="mitem">Pro Capture<span>·</span></span>
+    <span class="mitem">Layers for Jewellers<span>·</span></span>
+    <span class="mitem">Diamond Report By Circles<span>·</span></span>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="tools-intro">
+    <div class="tools-intro-left">
+      <div class="section-header" style="padding:0;border-bottom:none">
+        <div class="section-eyebrow">The Complete Suite</div>
+        <h2 class="section-title" style="padding-bottom:0">16 tools.<br><em>One workflow.</em></h2>
+      </div>
+    </div>
+    <div class="tools-intro-right">
+      <p>Every tool in the suite is purpose-built for jewellery modelling in Rhino 3D. From automated pave stone placement to layer-based BOM reports, the plugin handles the repetitive and technical work — so you can focus on design.</p>
+      <p style="margin-top:20px;font-size:11px;color:var(--ink3)">Updated continuously. New tools added with each release.</p>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="cat-nav">
+    <button class="cat-btn active" onclick="filterTools('all',this)">All Tools</button>
+    <button class="cat-btn" onclick="filterTools('setting',this)">Stone Setting</button>
+    <button class="cat-btn" onclick="filterTools('cutting',this)">Cutting</button>
+    <button class="cat-btn" onclick="filterTools('layer',this)">Layers & Reports</button>
+    <button class="cat-btn" onclick="filterTools('utility',this)">Utilities</button>
+  </div>
+
+  <div class="tools-grid" id="toolsGrid">
+
+    <!-- Stone Setting -->
+    <a href="auto-pave.html" class="tool-card" data-cat="setting">
+      <div class="tool-num">01</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Auto Pave Pro</div>
+      <div class="tool-desc">Automates pave stone placement across surfaces and solids. Handles spacing, orientation, and pattern distribution with adjustable parameters.</div>
+      <span class="tool-arrow">↗</span>
+    </a>
+
+    <a href="pave_planner_page.html" class="tool-card" data-cat="setting">
+      <div class="tool-num">02</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Pave Planner Pro</div>
+      <div class="tool-desc">Plans and builds pave metal geometry. Automates prong and seat construction with surface-adaptive offset generation.</div>
+      <span class="tool-arrow">↗</span>
+    </a>
+
+    <a href="single-line-pave.html" class="tool-card" data-cat="setting">
+      <div class="tool-num">03</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Single Line Pave</div>
+      <div class="tool-desc">Places stones in a precise single-row arrangement along a path. Ideal for eternity bands and straight-line pave designs.</div>
+      <span class="tool-arrow">↗</span>
+    </a>
+
+    <a href="curves-to-diamonds.html" class="tool-card" data-cat="setting">
+      <div class="tool-num">04</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Curves to Diamonds</div>
+      <div class="tool-desc">Distributes diamond geometry along any curve. Control count, spacing, rotation, and size variation for consistent, professional results.</div>
+      <span class="tool-arrow">↗</span>
+    </a>
+
+    <div class="tool-card" data-cat="setting" style="cursor:default">
+      <div class="tool-num">05</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Diamond by Crv on Srf</div>
+      <div class="tool-desc">Places diamonds guided by a curve projected onto a surface. Follows the surface contour for accurate stone placement on complex forms.</div>
+    </div>
+
+    <div class="tool-card" data-cat="setting" style="cursor:default">
+      <div class="tool-num">06</div>
+      <div class="tool-cat-badge">Stone Setting</div>
+      <div class="tool-name">Diamond Report By Circles</div>
+      <div class="tool-desc">Generates a structured diamond report by reading circle geometry in the model. Outputs stone counts and sizes grouped by layer.</div>
+    </div>
+
+    <!-- Cutting -->
+    <a href="azure-cutter-pro.html" class="tool-card" data-cat="cutting">
+      <div class="tool-num">07</div>
+      <div class="tool-cat-badge">Cutting</div>
+      <div class="tool-name">Azure Cutter Pro</div>
+      <div class="tool-desc">Cuts precise stone seats into metal geometry. Designed for clean boolean operations that produce production-ready setting geometry.</div>
+      <span class="tool-arrow">↗</span>
+    </a>
+
+    <!-- Layer & Reports -->
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">08</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Layers for Jewellers</div>
+      <div class="tool-desc">A standardised layer setup designed for jewellery modelling. Creates and manages all common jewellery layers in one step.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">09</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Layer BOM Report</div>
+      <div class="tool-desc">Generates a Bill of Materials from your layer structure. Exports object counts and names for accurate production documentation.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">10</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Group Objects by Layer</div>
+      <div class="tool-desc">Organises objects into named groups matching their layer structure. Simplifies complex models and prepares them for downstream use.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">11</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Group Objects by Color</div>
+      <div class="tool-desc">Groups objects based on their display colour. Useful for models where colour encodes material type or component role.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">12</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Sync Object Color to Layer</div>
+      <div class="tool-desc">Synchronises object display colours to match their layer colour. Keeps visual consistency across the model in one click.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">13</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Auto Layer by ObjectType</div>
+      <div class="tool-desc">Automatically assigns objects to appropriate layers based on their geometry type. Streamlines model organisation without manual sorting.</div>
+    </div>
+
+    <div class="tool-card" data-cat="layer" style="cursor:default">
+      <div class="tool-num">14</div>
+      <div class="tool-cat-badge">Layers & Reports</div>
+      <div class="tool-name">Randomize Layer Colors</div>
+      <div class="tool-desc">Assigns distinct random colours to all layers. Helps differentiate components visually when working on complex multi-layer models.</div>
+    </div>
+
+    <!-- Utilities -->
+    <div class="tool-card" data-cat="utility" style="cursor:default">
+      <div class="tool-num">15</div>
+      <div class="tool-cat-badge">Utility</div>
+      <div class="tool-name">Metal Weight Calculation</div>
+      <div class="tool-desc">Calculates the estimated metal weight of selected geometry based on material density. Supports common jewellery alloys.</div>
+    </div>
+
+    <div class="tool-card" data-cat="utility" style="cursor:default">
+      <div class="tool-num">16</div>
+      <div class="tool-cat-badge">Utility</div>
+      <div class="tool-name">Pro Capture</div>
+      <div class="tool-desc">Captures clean viewport renders with configurable output settings. Produces consistent documentation images directly from the viewport.</div>
+    </div>
+
+    <div class="tool-card" data-cat="utility" style="cursor:default">
+      <div class="tool-num">17</div>
+      <div class="tool-cat-badge">Utility</div>
+      <div class="tool-name">Switch Display</div>
+      <div class="tool-desc">Quickly toggles between display modes for selected objects or the full model. Useful for reviewing geometry at different stages of work.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-header">
+    <div class="section-eyebrow">Why This Suite</div>
+    <h2 class="section-title">Built for the way<br>jewellers actually <em>work</em></h2>
+  </div>
+  <div class="features-grid">
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="6"/>
+        <line x1="16" y1="4" x2="16" y2="8"/><line x1="16" y1="24" x2="16" y2="28"/>
+        <line x1="4" y1="16" x2="8" y2="16"/><line x1="24" y1="16" x2="28" y2="16"/>
+      </svg>
+      <div class="feat-title">Jewellery-specific logic</div>
+      <div class="feat-text">Every tool understands the requirements of jewellery modelling — stone orientations, pave patterns, seat geometry, and metal workflow conventions built in.</div>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 16 L16 6 L26 16 L16 26 Z"/>
+        <path d="M11 16 L16 11 L21 16 L16 21 Z" fill="currentColor" opacity="0.3"/>
+      </svg>
+      <div class="feat-title">Precision at every step</div>
+      <div class="feat-text">Outputs are production-ready. Stone placement, cutter geometry, and reports are all precise enough to go directly to manufacturing without adjustment.</div>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="4" y="4" width="10" height="10" rx="1"/><rect x="18" y="4" width="10" height="10" rx="1"/>
+        <rect x="4" y="18" width="10" height="10" rx="1"/><rect x="18" y="18" width="10" height="10" rx="1"/>
+      </svg>
+      <div class="feat-title">Unified suite, single install</div>
+      <div class="feat-text">All tools ship together under one plugin. One install, one licence, consistent interface across every command. No juggling separate plugins.</div>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M16 4 L20 14 L30 14 L22 20 L25 30 L16 24 L7 30 L10 20 L2 14 L12 14 Z"/>
+      </svg>
+      <div class="feat-title">Continuously updated</div>
+      <div class="feat-text">The suite evolves with regular updates — new tools, refined algorithms, and compatibility improvements. Your subscription always includes what's latest.</div>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="4" y="8" width="24" height="16" rx="1"/>
+        <path d="M4 12 L16 20 L28 12"/>
+      </svg>
+      <div class="feat-title">Responsive support</div>
+      <div class="feat-text">Queries answered within 24 hours. Customisation requests handled directly. The team behind the tools is available and responsive.</div>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="16" cy="16" r="12"/>
+        <path d="M16 10 L16 16 L20 20"/>
+      </svg>
+      <div class="feat-title">Time-efficient workflow</div>
+      <div class="feat-text">Repetitive tasks that take minutes manually are reduced to seconds. Stone placement, layer setup, and reporting are fully automated.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="section-header">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">From <em>install</em> to production</h2>
+  </div>
+  <div class="workflow-grid">
+    <div class="wf-step">
+      <div class="wf-n">01</div>
+      <div class="wf-title">Install the plugin</div>
+      <div class="wf-text">A single Rhino plugin file. Install via the standard Rhino plugin manager. All tools appear immediately in your command panel and toolbar.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">02</div>
+      <div class="wf-title">Run any command</div>
+      <div class="wf-text">Access tools by command name or from the MSH toolbar panel. Each tool opens a clean input dialog with all parameters visible.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">03</div>
+      <div class="wf-title">Adjust and confirm</div>
+      <div class="wf-text">Set your parameters — stone size, spacing, layer names, material type — and confirm. Results are applied directly to your Rhino model.</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-n">04</div>
+      <div class="wf-title">Production-ready output</div>
+      <div class="wf-text">The geometry, reports, and layer structures produced are ready for manufacturing, rendering, or client presentation without further editing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-header">
+    <div class="section-eyebrow">Subscription Plans</div>
+    <h2 class="section-title">Simple, <em>transparent</em> pricing</h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-period">Quarterly</div>
+      <div class="price-amount">₹29,999</div>
+      <div class="price-dur">Per user · 3 months</div>
+      <ul class="price-feats">
+        <li class="price-feat-item">All 16+ tools included</li>
+        <li class="price-feat-item">Regular updates</li>
+        <li class="price-feat-item">Email support</li>
+        <li class="price-feat-item">Commercial licence</li>
+      </ul>
+      <a href="mailto:modellingstudiohub@gmail.com?subject=Quarterly Subscription" class="btn-price">Subscribe</a>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-badge">Best Value</div>
+      <div class="price-period">Annual</div>
+      <div class="price-amount">₹95,999</div>
+      <div class="price-dur">Per user · 12 months · Save 11%</div>
+      <ul class="price-feats">
+        <li class="price-feat-item">All 16+ tools included</li>
+        <li class="price-feat-item">Priority support</li>
+        <li class="price-feat-item">Regular updates</li>
+        <li class="price-feat-item">Email support</li>
+        <li class="price-feat-item">Commercial licence</li>
+      </ul>
+      <a href="mailto:modellingstudiohub@gmail.com?subject=Annual Subscription" class="btn-price">Subscribe</a>
+    </div>
+
+    <div class="price-card">
+      <div class="price-period">Half-Yearly</div>
+      <div class="price-amount">₹49,999</div>
+      <div class="price-dur">Per user · 6 months · Save 8%</div>
+      <ul class="price-feats">
+        <li class="price-feat-item">All 16+ tools included</li>
+        <li class="price-feat-item">Regular updates</li>
+        <li class="price-feat-item">Email support</li>
+        <li class="price-feat-item">Commercial licence</li>
+      </ul>
+      <a href="mailto:modellingstudiohub@gmail.com?subject=Half-Yearly Subscription" class="btn-price">Subscribe</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-eyebrow">Get in Touch</div>
+    <h2 class="section-title">Questions, support,<br>or <em>customisation</em></h2>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-left">
+      <p>For licensing enquiries, technical support, or customisation requests, reach out directly. The team responds within 24 hours.</p>
+      <div class="contact-items">
+        <div class="contact-row">
+          <span class="cl-label">Email</span>
+          <span class="cl-val"><a href="mailto:modellingstudiohub@gmail.com">modellingstudiohub@gmail.com</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="cl-label">Phone</span>
+          <span class="cl-val"><a href="tel:+919076290895">+91 90762 90895</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="cl-label">Response time</span>
+          <span class="cl-val">Within 24 hours</span>
+        </div>
+        <div class="contact-row">
+          <span class="cl-label">Customisation</span>
+          <span class="cl-val"><a href="customisation-request.html">Submit a request →</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right">
+      <h3>Send a message</h3>
+      <p class="sub">We'll get back to you within 24 hours.</p>
+      <form action="https://formspree.io/f/mvgwravk" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select name="subject">
+            <option value="">Select a topic</option>
+            <option>Licensing &amp; Pricing</option>
+            <option>Technical Support</option>
+            <option>Customisation Request</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Describe your query or requirement..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;display:block;padding:14px">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="foot-logo">Modelling<span>Studio</span>HUB</div>
+    <p class="foot-copy">© 2025 Modelling Studio HUB.<br>All rights reserved.<br>Designed for 3D professionals worldwide.</p>
+  </div>
+  <div>
+    <div class="foot-col-title">Tools</div>
+    <ul class="foot-links">
+      <li><a href="auto-pave.html">Auto Pave Pro</a></li>
+      <li><a href="azure-cutter-pro.html">Azure Cutter Pro</a></li>
+      <li><a href="pave_planner_page.html">Pave Planner Pro</a></li>
+      <li><a href="curves-to-diamonds.html">Curves to Diamonds</a></li>
+      <li><a href="single-line-pave.html">Single Line Pave</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="foot-col-title">Company</div>
+    <ul class="foot-links">
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="customisation-request.html">Customisation Request</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+function filterTools(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
