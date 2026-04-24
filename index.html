@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelling Studio HUB — Professional Rhino Jewelry Plugins</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       CSS VARIABLES — DUAL THEME ENGINE
+       ============================================ */
+    :root {
+      --transition-theme: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg-base:        #0c0c0e;
+      --bg-surface:     #141416;
+      --bg-card:        #1a1a1e;
+      --bg-card-hover:  #202026;
+      --bg-glass:       rgba(20, 20, 22, 0.85);
+      --border:         rgba(255, 255, 255, 0.07);
+      --border-strong:  rgba(255, 255, 255, 0.14);
+      --text-primary:   #f0ede8;
+      --text-secondary: #8a8580;
+      --text-muted:     #4a4845;
+      --accent-gold:    #c9a96e;
+      --accent-gold-lt: #e8c99a;
+      --accent-blue:    #4a9eff;
+      --accent-glow:    rgba(201, 169, 110, 0.15);
+      --shadow-card:    0 8px 40px rgba(0,0,0,0.5);
+      --shadow-glow:    0 0 60px rgba(201,169,110,0.08);
+      --nav-bg:         rgba(12, 12, 14, 0.9);
+      --hero-overlay:   rgba(0,0,0,0.55);
+      --tag-bg:         rgba(201,169,110,0.1);
+      --tag-color:      #c9a96e;
+    }
+
+    [data-theme="light"] {
+      --bg-base:        #faf9f7;
+      --bg-surface:     #f4f2ee;
+      --bg-card:        #ffffff;
+      --bg-card-hover:  #f9f8f6;
+      --bg-glass:       rgba(250, 249, 247, 0.9);
+      --border:         rgba(0,0,0,0.07);
+      --border-strong:  rgba(0,0,0,0.13);
+      --text-primary:   #1a1714;
+      --text-secondary: #6b6560;
+      --text-muted:     #b5b0aa;
+      --accent-gold:    #9a7340;
+      --accent-gold-lt: #c9a96e;
+      --accent-blue:    #1a6cd4;
+      --accent-glow:    rgba(154, 115, 64, 0.08);
+      --shadow-card:    0 2px 20px rgba(0,0,0,0.08);
+      --shadow-glow:    0 0 40px rgba(154,115,64,0.06);
+      --nav-bg:         rgba(250,249,247,0.92);
+      --hero-overlay:   rgba(0,0,0,0.45);
+      --tag-bg:         rgba(154,115,64,0.08);
+      --tag-color:      #9a7340;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: var(--transition-theme);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       SCROLLBAR
+       ============================================ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 2px; }
+
+    /* ============================================
+       GRAIN TEXTURE OVERLAY
+       ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(200%) blur(24px);
+      -webkit-backdrop-filter: saturate(200%) blur(24px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition-theme);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 56px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent-gold); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .theme-toggle svg {
+      position: absolute;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+    .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+    [data-theme="light"] .icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+    [data-theme="light"] .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      margin-top: 56px;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 100px 32px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .hero-video-bg iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 160%; height: 160%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(12px) brightness(0.4) saturate(0.7);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--hero-overlay);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s ease 0.35s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent-gold-lt);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s ease 0.5s forwards;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto 48px;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s ease 0.65s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s ease 0.8s forwards;
+    }
+
+    .btn-gold {
+      background: var(--accent-gold);
+      color: #0c0c0e;
+      padding: 14px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-gold:hover {
+      background: var(--accent-gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(201,169,110,0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      padding: 14px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.4s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--accent-gold);
+      animation: scrollDrop 2s ease-in-out infinite;
+    }
+
+    /* ============================================
+       SECTION COMMONS
+       ============================================ */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--accent-gold);
+      margin: 20px auto;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       VIDEO SECTION
+       ============================================ */
+    .video-section {
+      background: var(--bg-surface);
+      padding: 120px 32px;
+      text-align: center;
+      transition: var(--transition-theme);
+    }
+
+    .video-section .section-header {
+      margin-bottom: 60px;
+    }
+
+    .video-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .video-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 4px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, transparent 50%, var(--accent-gold) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.3;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      display: block;
+    }
+
+    /* ============================================
+       PLUGINS SECTION
+       ============================================ */
+    .plugins-section {
+      padding: 140px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .plugins-section .section-header {
+      text-align: center;
+      margin-bottom: 100px;
+    }
+
+    .plugin-grid {
+      display: grid;
+      gap: 2px;
+    }
+
+    .plugin-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plugin-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .plugin-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-glow);
+      z-index: 1;
+    }
+
+    .plugin-card:hover::before { opacity: 1; }
+
+    .plugin-card:nth-child(even) .plugin-content { order: 2; }
+    .plugin-card:nth-child(even) .plugin-visual { order: 1; }
+
+    .plugin-content {
+      padding: 64px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .plugin-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+    }
+
+    .plugin-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tag-bg);
+      color: var(--tag-color);
+      padding: 4px 12px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+
+    .plugin-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+
+    .plugin-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .plugin-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .plugin-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent-gold);
+      transition: width 0.3s;
+    }
+
+    .plugin-link:hover::after { width: 100%; }
+    .plugin-link:hover { gap: 14px; }
+
+    .plugin-visual {
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .plugin-visual svg { position: relative; z-index: 1; }
+
+    /* Visual gradients */
+    .vis-1 { background: linear-gradient(145deg, #1a1520 0%, #2d1f3d 50%, #1a1520 100%); }
+    .vis-2 { background: linear-gradient(145deg, #101a20 0%, #1a3040 50%, #101a20 100%); }
+    .vis-3 { background: linear-gradient(145deg, #201520 0%, #3d1f35 50%, #201520 100%); }
+    .vis-4 { background: linear-gradient(145deg, #201a10 0%, #3d3015 50%, #201a10 100%); }
+    .vis-5 { background: linear-gradient(145deg, #101520 0%, #1f2d40 50%, #101520 100%); }
+
+    [data-theme="light"] .vis-1 { background: linear-gradient(145deg, #f0eaf8 0%, #e0d0f0 50%, #f0eaf8 100%); }
+    [data-theme="light"] .vis-2 { background: linear-gradient(145deg, #e8f0f8 0%, #d0e4f5 50%, #e8f0f8 100%); }
+    [data-theme="light"] .vis-3 { background: linear-gradient(145deg, #f8e8f0 0%, #f0d0e4 50%, #f8e8f0 100%); }
+    [data-theme="light"] .vis-4 { background: linear-gradient(145deg, #f8f0e0 0%, #f5e8c0 50%, #f8f0e0 100%); }
+    [data-theme="light"] .vis-5 { background: linear-gradient(145deg, #e0e8f8 0%, #c8d8f5 50%, #e0e8f8 100%); }
+
+    /* ============================================
+       COMMAND HUB SECTION
+       ============================================ */
+    .command-section {
+      padding: 140px 32px;
+      background: var(--bg-surface);
+      transition: var(--transition-theme);
+    }
+
+    .command-section .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 80px;
+    }
+
+    .command-categories {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .category-block {
+      margin-bottom: 60px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+      flex-shrink: 0;
+    }
+
+    .category-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+    }
+
+    .category-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .command-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .command-card:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .command-icon-wrap {
+      width: 36px;
+      height: 36px;
+      background: var(--tag-bg);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent-gold);
+    }
+
+    .command-info { flex: 1; }
+
+    .command-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .command-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .command-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--accent-gold);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      display: inline-block;
+    }
+
+    /* ============================================
+       FEATURES SECTION
+       ============================================ */
+    .features-section {
+      padding: 140px 32px;
+      background: var(--bg-base);
+      transition: var(--transition-theme);
+    }
+
+    .features-section .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--border);
+    }
+
+    .feature-item {
+      background: var(--bg-base);
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .feature-item:hover { background: var(--bg-card); }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 24px;
+      color: var(--accent-gold);
+    }
+
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .feature-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ============================================
+       PRICING SECTION
+       ============================================ */
+    .pricing-section {
+      padding: 140px 32px;
+      background: var(--bg-surface);
+      transition: var(--transition-theme);
+    }
+
+    .pricing-section .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 56px 44px;
+      text-align: center;
+      position: relative;
+      transition: all 0.4s;
+    }
+
+    .pricing-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-4px);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent-gold);
+      background: var(--bg-card-hover);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-gold);
+      color: #0c0c0e;
+      padding: 5px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .pricing-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .pricing-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .pricing-duration {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 44px;
+      text-align: left;
+    }
+
+    .pricing-features li {
+      padding: 10px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pricing-features li:last-child { border-bottom: none; }
+
+    .pricing-features li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .btn-pricing {
+      display: block;
+      text-align: center;
+      padding: 14px 32px;
+      background: transparent;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+
+    .btn-pricing:hover,
+    .pricing-card.featured .btn-pricing {
+      background: var(--accent-gold);
+      color: #0c0c0e;
+    }
+
+    .pricing-card.featured .btn-pricing:hover {
+      background: var(--accent-gold-lt);
+      border-color: var(--accent-gold-lt);
+    }
+
+    /* ============================================
+       CONTACT SECTION
+       ============================================ */
+    .contact-section {
+      padding: 140px 32px;
+      background: var(--bg-base);
+      transition: var(--transition-theme);
+    }
+
+    .contact-section .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--border);
+    }
+
+    .contact-item {
+      background: var(--bg-base);
+      padding: 48px 36px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .contact-item:hover { background: var(--bg-card); }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 20px;
+      color: var(--accent-gold);
+    }
+
+    .contact-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    .contact-value a {
+      color: var(--accent-gold);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-value a:hover { color: var(--accent-gold-lt); }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 32px;
+      transition: var(--transition-theme);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--accent-gold); }
+
+    /* ============================================
+       SCROLL REVEAL ANIMATIONS
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ============================================
+       KEYFRAMES
+       ============================================ */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scrollDrop {
+      0% { top: -100%; }
+      100% { top: 200%; }
+    }
+
+    @keyframes gemRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 900px) {
+      .plugin-card { grid-template-columns: 1fr !important; }
+      .plugin-card:nth-child(even) .plugin-content { order: 1; }
+      .plugin-card:nth-child(even) .plugin-visual { order: 2; }
+      .plugin-visual { min-height: 240px; }
+      .plugin-content { padding: 44px 36px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-cta { flex-direction: column; align-items: center; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================
+       NAVIGATION
+  ================================================ -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <svg class="logo-mark" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--accent-gold)" stroke-width="1.5" fill="none"/>
+          <polygon points="14,8 20,11 20,17 14,20 8,17 8,11" stroke="var(--accent-gold)" stroke-width="1" fill="none" opacity="0.5"/>
+          <circle cx="14" cy="14" r="2" fill="var(--accent-gold)"/>
+        </svg>
+        <span class="logo-text">MSH Studio</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <!-- Sun -->
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon -->
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================================================
+       HERO
+  ================================================ -->
+  <section class="hero">
+    <div class="hero-video-bg">
+      <iframe src="https://www.youtube.com/embed/8-JXkEX41_4?autoplay=1&mute=1&loop=1&playlist=8-JXkEX41_4&controls=0&showinfo=0&rel=0&modestbranding=1&fs=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Rhino 3D · Professional Jewelry Plugins</p>
+      <h1 class="hero-title">Design Jewellery<br><em>Faster & Smarter</em></h1>
+      <p class="hero-subtitle">Precision tools for the modern atelier</p>
+      <p class="hero-desc">Save hours of manual work with professional-grade plugins. Automate stone placement, calculate metal weights, and generate perfect cutters — all inside Rhino 3D.</p>
+      <div class="hero-cta">
+        <a href="#plugins" class="btn-gold">Explore Plugins</a>
+        <a href="#pricing" class="btn-outline">View Pricing</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       VIDEO SECTION
+  ================================================ -->
+  <section class="video-section">
+    <div class="section-header reveal">
+      <p class="section-label">Studio Showcase</p>
+      <h2 class="section-title">See It in Action</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="video-wrapper reveal">
+      <iframe src="https://www.youtube.com/embed/8-JXkEX41_4" title="Modelling Studio HUB Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PLUGINS SECTION
+  ================================================ -->
+  <section id="plugins" class="plugins-section">
+    <div class="section-header reveal">
+      <p class="section-label">Product Suite</p>
+      <h2 class="section-title">Our Plugins</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Powerful. Intuitive. Professional.</p>
+    </div>
+
+    <div class="plugin-grid">
+
+      <!-- Azure Cutter Pro -->
+      <div class="plugin-card reveal">
+        <div class="plugin-content">
+          <div class="plugin-number">01 / 05</div>
+          <span class="plugin-tag">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="3"/></svg>
+            Essential
+          </span>
+          <h3 class="plugin-name">Azure Cutter Pro</h3>
+          <p class="plugin-desc">Generate perfect cutters in seconds with intelligent parameter controls. Turn your whole day's hustle into just one minute of effortless creation — every setting dialled to precision.</p>
+          <a href="azure-cutter-pro.html" class="plugin-link">Explore Plugin →</a>
+        </div>
+        <div class="plugin-visual vis-1">
+          <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="70" cy="70" r="60" stroke="rgba(201,169,110,0.15)" stroke-width="1"/>
+            <circle cx="70" cy="70" r="48" stroke="rgba(201,169,110,0.25)" stroke-width="1"/>
+            <circle cx="70" cy="70" r="36" stroke="rgba(201,169,110,0.35)" stroke-width="1"/>
+            <circle cx="70" cy="70" r="24" stroke="rgba(201,169,110,0.5)" stroke-width="1"/>
+            <circle cx="70" cy="70" r="12" fill="rgba(201,169,110,0.4)"/>
+            <circle cx="70" cy="70" r="6" fill="rgba(201,169,110,0.8)"/>
+            <line x1="70" y1="10" x2="70" y2="130" stroke="rgba(201,169,110,0.1)" stroke-width="1"/>
+            <line x1="10" y1="70" x2="130" y2="70" stroke="rgba(201,169,110,0.1)" stroke-width="1"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Pave Planner -->
+      <div class="plugin-card reveal">
+        <div class="plugin-content">
+          <div class="plugin-number">02 / 05</div>
+          <span class="plugin-tag">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><polygon points="6,1 11,11 1,11"/></svg>
+            Popular
+          </span>
+          <h3 class="plugin-name">Pave Planner Pro</h3>
+          <p class="plugin-desc">Automate pave setting with precision and control. Perfect for complex jewelry designs and intricate stone placement workflows — visualize before you commit.</p>
+          <a href="pave_planner_page.html" class="plugin-link">Explore Plugin →</a>
+        </div>
+        <div class="plugin-visual vis-2">
+          <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="70,20 85,50 120,55 95,80 101,115 70,99 39,115 45,80 20,55 55,50" stroke="rgba(201,169,110,0.4)" stroke-width="1.5" fill="rgba(201,169,110,0.06)"/>
+            <circle cx="42" cy="48" r="8" stroke="rgba(201,169,110,0.4)" stroke-width="1" fill="rgba(201,169,110,0.1)"/>
+            <circle cx="98" cy="48" r="8" stroke="rgba(201,169,110,0.4)" stroke-width="1" fill="rgba(201,169,110,0.1)"/>
+            <circle cx="70" cy="70" r="8" stroke="rgba(201,169,110,0.6)" stroke-width="1.5" fill="rgba(201,169,110,0.2)"/>
+            <circle cx="42" cy="92" r="8" stroke="rgba(201,169,110,0.4)" stroke-width="1" fill="rgba(201,169,110,0.1)"/>
+            <circle cx="98" cy="92" r="8" stroke="rgba(201,169,110,0.4)" stroke-width="1" fill="rgba(201,169,110,0.1)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Auto Pave -->
+      <div class="plugin-card reveal">
+        <div class="plugin-content">
+          <div class="plugin-number">03 / 05</div>
+          <span class="plugin-tag">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><rect x="2" y="2" width="8" height="8" rx="1"/></svg>
+            Advanced
+          </span>
+          <h3 class="plugin-name">Auto Pave</h3>
+          <p class="plugin-desc">Fully automated pave generation with precision-driven algorithms. Create intricate stone arrangements in seconds — the most powerful automated paving tool for Rhino.</p>
+          <a href="auto-pave.html" class="plugin-link">Explore Plugin →</a>
+        </div>
+        <div class="plugin-visual vis-3">
+          <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M70 20 L84 55 L120 55 L92 75 L104 110 L70 90 L36 110 L48 75 L20 55 L56 55 Z" stroke="rgba(201,169,110,0.5)" stroke-width="1.5" fill="rgba(201,169,110,0.06)"/>
+            <circle cx="70" cy="65" r="18" stroke="rgba(201,169,110,0.4)" stroke-width="1" fill="none"/>
+            <circle cx="70" cy="65" r="6" fill="rgba(201,169,110,0.6)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Curves to Diamonds -->
+      <div class="plugin-card reveal">
+        <div class="plugin-content">
+          <div class="plugin-number">04 / 05</div>
+          <span class="plugin-tag">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1L11 6L6 11L1 6Z"/></svg>
+            Creative
+          </span>
+          <h3 class="plugin-name">Curves to Diamonds</h3>
+          <p class="plugin-desc">Turn simple curves into stunning diamond arrangements — instantly. Map any freeform path into a perfectly spaced stone channel with full parametric control.</p>
+          <a href="curves-to-diamonds.html" class="plugin-link">Explore Plugin →</a>
+        </div>
+        <div class="plugin-visual vis-4">
+          <svg width="160" height="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 70 Q50 20, 80 50 T140 30" stroke="rgba(201,169,110,0.4)" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+            <path d="M28 54 L35 46 L42 54 L35 62Z" fill="rgba(201,169,110,0.7)"/>
+            <path d="M58 38 L65 30 L72 38 L65 46Z" fill="rgba(201,169,110,0.7)"/>
+            <path d="M90 46 L97 38 L104 46 L97 54Z" fill="rgba(201,169,110,0.7)"/>
+            <path d="M120 34 L127 26 L134 34 L127 42Z" fill="rgba(201,169,110,0.7)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Single Line Pave -->
+      <div class="plugin-card reveal">
+        <div class="plugin-content">
+          <div class="plugin-number">05 / 05</div>
+          <span class="plugin-tag">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="2"/></svg>
+            Precision
+          </span>
+          <h3 class="plugin-name">Single Line Pave</h3>
+          <p class="plugin-desc">Create perfect single-line pave settings with precise stone spacing and alignment. Ideal for delicate eternity bands and channel-set designs requiring exact tolerances.</p>
+          <a href="single-line-pave.html" class="plugin-link">Explore Plugin →</a>
+        </div>
+        <div class="plugin-visual vis-5">
+          <svg width="160" height="60" viewBox="0 0 160 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="30" x2="140" y2="30" stroke="rgba(201,169,110,0.3)" stroke-width="1.5"/>
+            <circle cx="36" cy="30" r="12" stroke="rgba(201,169,110,0.6)" stroke-width="1.5" fill="rgba(201,169,110,0.12)"/>
+            <circle cx="68" cy="30" r="12" stroke="rgba(201,169,110,0.6)" stroke-width="1.5" fill="rgba(201,169,110,0.12)"/>
+            <circle cx="100" cy="30" r="12" stroke="rgba(201,169,110,0.6)" stroke-width="1.5" fill="rgba(201,169,110,0.12)"/>
+            <circle cx="132" cy="30" r="12" stroke="rgba(201,169,110,0.6)" stroke-width="1.5" fill="rgba(201,169,110,0.12)"/>
+            <circle cx="36" cy="30" r="5" fill="rgba(201,169,110,0.7)"/>
+            <circle cx="68" cy="30" r="5" fill="rgba(201,169,110,0.7)"/>
+            <circle cx="100" cy="30" r="5" fill="rgba(201,169,110,0.7)"/>
+            <circle cx="132" cy="30" r="5" fill="rgba(201,169,110,0.7)"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================
+       COMMAND HUB
+  ================================================ -->
+  <section id="commands" class="command-section">
+    <div class="section-header reveal">
+      <p class="section-label">Command Reference</p>
+      <h2 class="section-title">Command Hub</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">20 professional commands across 4 categories — every tool you need to work faster in Rhino.</p>
+    </div>
+
+    <div class="command-categories">
+
+      <!-- Category 1: Gem Setting & Pave -->
+      <div class="category-block reveal">
+        <div class="category-header">
+          <div class="category-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+            </svg>
+          </div>
+          <span class="category-name">Gem Setting & Pave</span>
+          <span class="category-count">07 commands</span>
+        </div>
+        <div class="commands-grid">
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Auto Pave Pro UI</div>
+              <div class="command-desc">Full-UI automated pave stone generation with live parameter control.</div>
+              <span class="command-badge">UI</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M3 21L21 3"/><circle cx="12" cy="12" r="4"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Paveplanner Pro UI</div>
+              <div class="command-desc">Interactive pave planning interface with multi-zone distribution.</div>
+              <span class="command-badge">UI</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 Q8 4, 12 12 T21 12"/><path d="M8 8l2 2-2 2"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Diamond Between 2 Crvs</div>
+              <div class="command-desc">Distribute diamonds uniformly between two guide curves.</div>
+              <span class="command-badge">Geometry</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a9 9 0 010 18"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Diamond by Crv on Srf</div>
+              <div class="command-desc">Place diamonds along a curve draped over a 3D surface.</div>
+              <span class="command-badge">Geometry</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L18.5 6.5V13.5L12 17L5.5 13.5V6.5L12 3Z"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Crvs to Diamonds</div>
+              <div class="command-desc">Convert any curve array into parametric diamond paths instantly.</div>
+              <span class="command-badge">Geometry</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Diamond Report By Circles</div>
+              <div class="command-desc">Auto-generate stone count reports from circular selection regions.</div>
+              <span class="command-badge">Report</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Azure Cutter Pro UI</div>
+              <div class="command-desc">Full UI for generating precision stone cutters with live preview.</div>
+              <span class="command-badge">UI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 2: Metal & Weight Calculation -->
+      <div class="category-block reveal">
+        <div class="category-header">
+          <div class="category-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2v20M2 12h20M6.34 6.34l11.32 11.32M17.66 6.34L6.34 17.66"/>
+            </svg>
+          </div>
+          <span class="category-name">Metal & Weight Calculation</span>
+          <span class="category-count">03 commands</span>
+        </div>
+        <div class="commands-grid">
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Metal Weight Calc</div>
+              <div class="command-desc">Calculate precise metal weight for any Rhino geometry by material type.</div>
+              <span class="command-badge">Calculation</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Multi Metal Calc</div>
+              <div class="command-desc">Compare weight and cost across multiple metal alloys simultaneously.</div>
+              <span class="command-badge">Calculation</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Layer BOM Report</div>
+              <div class="command-desc">Export full bill-of-materials by layer with object counts and properties.</div>
+              <span class="command-badge">Report</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 3: Layer & Object Management -->
+      <div class="category-block reveal">
+        <div class="category-header">
+          <div class="category-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+              <line x1="12" y1="2" x2="12" y2="22"/>
+              <path d="M2 8.5l10 7 10-7"/>
+            </svg>
+          </div>
+          <span class="category-name">Layer & Object Management</span>
+          <span class="category-count">06 commands</span>
+        </div>
+        <div class="commands-grid">
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Auto Layer by ObjectType</div>
+              <div class="command-desc">Automatically sort objects to dedicated layers based on their type.</div>
+              <span class="command-badge">Automation</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="4"/><circle cx="16" cy="16" r="4"/><line x1="8" y1="12" x2="8" y2="20"/><line x1="12" y1="8" x2="20" y2="8"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Group Objects by Color</div>
+              <div class="command-desc">Batch-group any selection of objects by their display colour.</div>
+              <span class="command-badge">Grouping</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Group Objects by Layer</div>
+              <div class="command-desc">Organise and group geometry by layer assignment in one click.</div>
+              <span class="command-badge">Grouping</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Randomize Layer Colors</div>
+              <div class="command-desc">Assign unique random colors to all layers for visual clarity.</div>
+              <span class="command-badge">Display</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Sync Object Color to Layer</div>
+              <div class="command-desc">Force all object colors to inherit from their parent layer.</div>
+              <span class="command-badge">Sync</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Layers for Jewellers</div>
+              <div class="command-desc">Load a jewellery-specific layer template with preset categories.</div>
+              <span class="command-badge">Template</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 4: Utility & Display Tools -->
+      <div class="category-block reveal">
+        <div class="category-header">
+          <div class="category-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <span class="category-name">Utility & Display Tools</span>
+          <span class="category-count">04 commands</span>
+        </div>
+        <div class="commands-grid">
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21h10"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Pro Capture</div>
+              <div class="command-desc">One-click high-resolution viewport capture with custom output settings.</div>
+              <span class="command-badge">Capture</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-2">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Select SameBlocks</div>
+              <div class="command-desc">Select all instances of a block definition in one action.</div>
+              <span class="command-badge">Selection</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-3">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">Switch Display</div>
+              <div class="command-desc">Rapidly toggle between display modes without navigating menus.</div>
+              <span class="command-badge">Display</span>
+            </div>
+          </div>
+          <div class="command-card reveal reveal-delay-1">
+            <div class="command-icon-wrap">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+            <div class="command-info">
+              <div class="command-name">ID Rail</div>
+              <div class="command-desc">Identify and tag rail curves for use in downstream pave workflows.</div>
+              <span class="command-badge">Utility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================
+       FEATURES SECTION
+  ================================================ -->
+  <section id="features" class="features-section">
+    <div class="section-header reveal">
+      <p class="section-label">Why MSH</p>
+      <h2 class="section-title">Built for Professionals</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Every tool crafted for the demands of production jewelry design.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item reveal reveal-delay-1">
+        <svg class="feature-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M26 8 L32 24 L48 26 L36 38 L39 54 L26 47 L13 54 L16 38 L4 26 L20 24 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="26" cy="26" r="8" stroke="currentColor" stroke-width="1" fill="none" opacity="0.4"/>
+        </svg>
+        <h3 class="feature-title">Lightning Fast</h3>
+        <p class="feature-text">Optimised algorithms built specifically for jewellery geometry. Outputs that once took hours now take seconds — no waiting, no compromises.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-2">
+        <svg class="feature-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="26" cy="26" r="20" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="26" cy="26" r="14" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+          <circle cx="26" cy="26" r="8" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+          <circle cx="26" cy="26" r="3" fill="currentColor"/>
+        </svg>
+        <h3 class="feature-title">Precision Control</h3>
+        <p class="feature-text">Fine-tune every parameter with intuitive real-time controls. From stone spacing to cutter geometry, every dimension is yours to command.</p>
+      </div>
+      <div class="feature-item reveal reveal-delay-3">
+        <svg class="feature-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="16" height="16" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="28" y="8" width="16" height="16" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="8" y="28" width="16" height="16" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="28" y="28" width="16" height="16" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <h3 class="feature-title">Production Quality</h3>
+        <p class="feature-text">All outputs are production-ready and meet international industry standards. Every tool tested by working jewelry designers and CAD professionals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PRICING SECTION
+  ================================================ -->
+  <section id="pricing" class="pricing-section">
+    <div class="section-header reveal">
+      <p class="section-label">Investment</p>
+      <h2 class="section-title">Simple Pricing</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Choose the subscription that fits your studio's workflow.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1">
+        <p class="pricing-period">Quarterly</p>
+        <div class="pricing-amount">₹29,999</div>
+        <p class="pricing-duration">per quarter · single user</p>
+        <ul class="pricing-features">
+          <li>All plugins included</li>
+          <li>Regular updates</li>
+          <li>Email support</li>
+          <li>Commercial license</li>
+        </ul>
+        <a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a>
+      </div>
+
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-badge">Best Value</div>
+        <p class="pricing-period">Annual</p>
+        <div class="pricing-amount">₹95,999</div>
+        <p class="pricing-duration">per year · single user · save 11%</p>
+        <ul class="pricing-features">
+          <li>All plugins included</li>
+          <li>Priority support</li>
+          <li>Regular updates</li>
+          <li>Email support</li>
+          <li>Commercial license</li>
+        </ul>
+        <a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a>
+      </div>
+
+      <div class="pricing-card reveal reveal-delay-3">
+        <p class="pricing-period">Half-Yearly</p>
+        <div class="pricing-amount">₹49,999</div>
+        <p class="pricing-duration">per 6 months · single user · save 8%</p>
+        <ul class="pricing-features">
+          <li>All plugins included</li>
+          <li>Regular updates</li>
+          <li>Email support</li>
+          <li>Commercial license</li>
+        </ul>
+        <a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       CONTACT SECTION
+  ================================================ -->
+  <section id="contact" class="contact-section">
+    <div class="section-header reveal">
+      <p class="section-label">Studio Contact</p>
+      <h2 class="section-title">Get in Touch</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">We're here for any questions about our tools or customisations.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item reveal reveal-delay-1">
+        <svg class="contact-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="9" width="28" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M4 12L18 21L32 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="contact-label">Email</div>
+        <div class="contact-value"><a href="mailto:msh3dstudio@gmail.com">msh3dstudio@gmail.com</a></div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-2">
+        <svg class="contact-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 4C8 4 7 5 7 6V30C7 31 8 32 9 32H27C28 32 29 31 29 30V6C29 5 28 4 27 4H9Z" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="14" y="26" width="8" height="2" rx="1" fill="currentColor" opacity="0.5"/>
+        </svg>
+        <div class="contact-label">Phone</div>
+        <div class="contact-value"><a href="tel:+919076290895">+91 9076 290 895</a></div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-3">
+        <svg class="contact-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M18 9V18L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="contact-label">Response Time</div>
+        <div class="contact-value">Within 24 hours</div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-4">
+        <svg class="contact-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 4L28 10V22L18 28L8 22V10L18 4Z" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="18" cy="16" r="5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div class="contact-label">Customisation</div>
+        <div class="contact-value"><a href="customisation-request.html">Request Customisation →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       FOOTER
+  ================================================ -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-logo">Modelling Studio HUB</span>
+      <span class="footer-text">© 2025 Modelling Studio HUB. Designed for 3D professionals worldwide.</span>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ================================================
+       JAVASCRIPT
+  ================================================ -->
+  <script>
+    /* ----- THEME ENGINE ----- */
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+
+    const savedTheme = localStorage.getItem('msh-theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('msh-theme', next);
+    });
+
+    /* ----- SCROLL REVEAL ----- */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ----- NAV SHADOW ON SCROLL ----- */
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.style.borderBottomColor = 'var(--border-strong)';
+      } else {
+        nav.style.borderBottomColor = 'var(--border)';
+      }
+    });
+
+    /* ----- SMOOTH ANCHOR SCROLL ----- */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
