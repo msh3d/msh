@@ -1,78 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customisation Request - Modelling Studio HUB</title>
+  <title>Customisation Request — Modelling Studio HUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary:#1d1d1f; --secondary:#86868b; --accent:#0071e3; --light:#f5f5f7; --white:#fff;
+    :root { --transition-theme: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease; }
+    [data-theme="dark"] {
+      --bg-base:#0c0c0e; --bg-surface:#141416; --bg-card:#1a1a1e; --bg-card-hover:#202026;
+      --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.14);
+      --text-primary:#f0ede8; --text-secondary:#8a8580; --text-muted:#4a4845;
+      --accent-gold:#c9a96e; --accent-gold-lt:#e8c99a;
+      --shadow-card:0 8px 40px rgba(0,0,0,0.5); --nav-bg:rgba(12,12,14,0.9);
+      --input-bg:#111113; --input-border:rgba(255,255,255,0.1); --input-focus:rgba(201,169,110,0.3);
+      --hero-bg:#0a0a0c;
     }
-    body { font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif; margin:0; background:var(--white); color:var(--primary); }
-    nav { position:fixed; top:0; width:100%; background:rgba(255,255,255,0.8); border-bottom:1px solid rgba(0,0,0,0.1); }
-    .nav-container { max-width:980px; margin:0 auto; padding:0 22px; display:flex; justify-content:space-between; align-items:center; height:48px; }
-    .logo { font-size:21px; font-weight:600; color:var(--primary); text-decoration:none; }
-    .nav-links { display:flex; gap:36px; list-style:none; }
-    .nav-links a { color:var(--primary); text-decoration:none; font-size:12px; }
+    [data-theme="light"] {
+      --bg-base:#faf9f7; --bg-surface:#f4f2ee; --bg-card:#ffffff; --bg-card-hover:#f9f8f6;
+      --border:rgba(0,0,0,0.07); --border-strong:rgba(0,0,0,0.13);
+      --text-primary:#1a1714; --text-secondary:#6b6560; --text-muted:#b5b0aa;
+      --accent-gold:#9a7340; --accent-gold-lt:#c9a96e;
+      --shadow-card:0 2px 20px rgba(0,0,0,0.08); --nav-bg:rgba(250,249,247,0.92);
+      --input-bg:#ffffff; --input-border:rgba(0,0,0,0.12); --input-focus:rgba(154,115,64,0.25);
+      --hero-bg:#0f0f12;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg-base);color:var(--text-primary);overflow-x:hidden;transition:var(--transition-theme);line-height:1.6}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--accent-gold);border-radius:2px}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
 
-    .form-section { padding:120px 20px; max-width:700px; margin:80px auto 0; text-align:center; }
-    .form-section h1 { font-size:36px; margin-bottom:16px; }
-    .form-section p { color:var(--secondary); margin-bottom:40px; }
-    form { display:flex; flex-direction:column; gap:20px; background:var(--light); padding:40px; border-radius:18px; }
-    input, select, textarea { padding:12px 16px; border:1px solid #ddd; border-radius:8px; font-size:16px; width:100%; }
-    textarea { resize:vertical; min-height:120px; }
-    button { background:var(--accent); color:var(--white); padding:14px; border:none; border-radius:980px; font-size:17px; cursor:pointer; transition:all 0.3s; }
-    button:hover { background:#0077ed; }
-    footer { background:var(--light); padding:40px 20px; text-align:center; margin-top:60px; }
-    .footer-text { font-size:12px; color:var(--secondary); margin-bottom:8px; }
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;background:var(--nav-bg);backdrop-filter:saturate(200%) blur(24px);-webkit-backdrop-filter:saturate(200%) blur(24px);z-index:1000;border-bottom:1px solid var(--border);transition:var(--transition-theme)}
+    .nav-container{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;height:56px}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text-primary);letter-spacing:0.04em;text-transform:uppercase}
+    .nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+    .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.3s}
+    .nav-links a:hover{color:var(--accent-gold)}
+    .nav-breadcrumb{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.1em}
+    .nav-breadcrumb span{color:var(--accent-gold)}
+    .theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-strong);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);transition:all 0.3s;position:relative;overflow:hidden}
+    .theme-toggle:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+    .theme-toggle svg{position:absolute;transition:transform 0.4s ease,opacity 0.4s ease}
+    .icon-sun{opacity:0;transform:rotate(-90deg) scale(0.5)}
+    .icon-moon{opacity:1;transform:rotate(0deg) scale(1)}
+    [data-theme="light"] .icon-sun{opacity:1;transform:rotate(0deg) scale(1)}
+    [data-theme="light"] .icon-moon{opacity:0;transform:rotate(90deg) scale(0.5)}
+
+    /* PAGE HERO BAND */
+    .page-hero{margin-top:56px;padding:100px 32px 80px;background:var(--hero-bg);text-align:center;position:relative;overflow:hidden}
+    .page-hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.1) 0%,transparent 65%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+    .page-hero-content{position:relative;z-index:1}
+    .hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:20px;opacity:0;animation:fadeUp 0.8s ease 0.2s forwards}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,72px);font-weight:300;line-height:1.05;letter-spacing:-0.02em;color:#f0ede8;margin-bottom:16px;opacity:0;animation:fadeUp 0.9s ease 0.35s forwards}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,20px);font-weight:300;font-style:italic;color:rgba(240,237,232,0.55);opacity:0;animation:fadeUp 0.9s ease 0.5s forwards}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    /* FORM SECTION */
+    .form-section{padding:100px 32px 140px;background:var(--bg-surface);transition:var(--transition-theme)}
+    .form-container{max-width:760px;margin:0 auto}
+
+    /* Two column info row */
+    .form-info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:64px}
+    .form-info-item{background:var(--bg-surface);padding:40px 32px;text-align:center;transition:background 0.3s}
+    .form-info-item:hover{background:var(--bg-card)}
+    .form-info-icon{width:32px;height:32px;margin:0 auto 16px;color:var(--accent-gold)}
+    .form-info-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px}
+    .form-info-value{font-size:14px;color:var(--text-secondary);font-weight:300}
+
+    /* Form card */
+    .form-card{background:var(--bg-card);border:1px solid var(--border);padding:60px 56px;position:relative;overflow:hidden}
+    .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-gold),transparent);opacity:0.3}
+    .form-group{margin-bottom:28px}
+    .form-label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+    .form-required{color:var(--accent-gold)}
+    .form-input, .form-select, .form-textarea{
+      width:100%;padding:14px 18px;background:var(--input-bg);border:1px solid var(--input-border);
+      color:var(--text-primary);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:300;
+      border-radius:0;outline:none;transition:border-color 0.3s,box-shadow 0.3s;
+      -webkit-appearance:none;appearance:none;
+    }
+    .form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent-gold);box-shadow:0 0 0 3px var(--input-focus)}
+    .form-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8580' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 18px center}
+    .form-select option{background:var(--bg-card);color:var(--text-primary)}
+    .form-textarea{resize:vertical;min-height:140px;line-height:1.7}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .form-submit{width:100%;padding:16px 32px;background:var(--accent-gold);color:#0c0c0e;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.3s;margin-top:8px}
+    .form-submit:hover{background:var(--accent-gold-lt);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,169,110,0.3)}
+    .form-note{font-size:12px;color:var(--text-muted);text-align:center;margin-top:20px}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* FOOTER */
+    footer{background:var(--bg-base);border-top:1px solid var(--border);padding:48px 32px;transition:var(--transition-theme)}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--text-secondary);letter-spacing:0.06em;text-transform:uppercase}
+    .footer-text{font-size:12px;color:var(--text-muted)}
+    .footer-links{display:flex;gap:24px;list-style:none}
+    .footer-links a{color:var(--text-muted);text-decoration:none;font-size:12px;letter-spacing:0.05em;transition:color 0.3s}
+    .footer-links a:hover{color:var(--accent-gold)}
+
+    @media(max-width:900px){.form-row{grid-template-columns:1fr}.form-info-row{grid-template-columns:1fr}.form-card{padding:40px 28px}.nav-links{display:none}.footer-inner{flex-direction:column;gap:16px;text-align:center}}
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+
   <nav>
     <div class="nav-container">
-      <a href="index.html" class="logo">Home</a>
+      <a href="index.html" class="logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--accent-gold)" stroke-width="1.5" fill="none"/><polygon points="14,8 20,11 20,17 14,20 8,17 8,11" stroke="var(--accent-gold)" stroke-width="1" fill="none" opacity="0.5"/><circle cx="14" cy="14" r="2" fill="var(--accent-gold)"/></svg>
+        <span class="logo-text">MSH Studio</span>
+      </a>
+      <div class="nav-breadcrumb">Studio / <span>Customisation Request</span></div>
       <ul class="nav-links">
         <li><a href="index.html#plugins">Explore Plugins</a></li>
         <li><a href="index.html#features">Features</a></li>
         <li><a href="index.html#pricing">Pricing</a></li>
         <li><a href="index.html#contact">Contact</a></li>
       </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </nav>
 
-  <!-- Form -->
-  <section class="form-section">
-    <h1>Customisation Request</h1>
-    <p>Tell us about your requirements and our team will get back to you within 24 hours.</p>
-
-    <form action="https://formspree.io/f/mvgwravk" method="POST" enctype="multipart/form-data">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <input type="tel" name="phone" placeholder="Phone Number (optional)">
-      
-      <select name="project-type" required>
-        <option value="">Select Project Type</option>
-        <option value="Azure Cutter">Azure Cutter Pro</option>
-        <option value="Azure Cutter">Auto Pave</option>
-        <option value="Pave Planner">Pave Planner</option>
-        <option value="Pave Planner">Curve to Diamonds</option>
-        <option value="Pave Planner">Single Line Pave</option>
-        <option value="Other">Other</option>
-      </select>
-      
-      <textarea name="details" placeholder="Describe your customisation request..." required></textarea>
-      
-      <button type="submit">Submit Request</button>
-    </form>
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-grid"></div>
+    <div class="page-hero-glow"></div>
+    <div class="page-hero-content">
+      <p class="hero-eyebrow">Bespoke Development</p>
+      <h1 class="hero-title">Customisation Request</h1>
+      <p class="hero-subtitle">Tell us what you need — we'll build it</p>
+    </div>
   </section>
 
-  <!-- Footer -->
+  <!-- FORM SECTION -->
+  <section class="form-section">
+    <div class="form-container">
+
+      <!-- Info row -->
+      <div class="form-info-row reveal">
+        <div class="form-info-item">
+          <svg class="form-info-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="16" cy="16" r="12"/>
+            <path d="M16 8v8l5 5"/>
+          </svg>
+          <div class="form-info-label">Response Time</div>
+          <div class="form-info-value">Within 24 hours</div>
+        </div>
+        <div class="form-info-item">
+          <svg class="form-info-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M16 4L28 10V22L16 28L4 22V10Z"/>
+            <circle cx="16" cy="16" r="5"/>
+          </svg>
+          <div class="form-info-label">Scope</div>
+          <div class="form-info-value">Any plugin, any feature</div>
+        </div>
+        <div class="form-info-item">
+          <svg class="form-info-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="8" width="24" height="16" rx="1"/>
+            <path d="M4 12l12 8 12-8"/>
+          </svg>
+          <div class="form-info-label">Contact</div>
+          <div class="form-info-value">msh3dstudio@gmail.com</div>
+        </div>
+      </div>
+
+      <!-- Form card -->
+      <div class="form-card reveal">
+        <form action="https://formspree.io/f/mvgwravk" method="POST" enctype="multipart/form-data">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">Your Name <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address <span class="form-required">*</span></label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="you@studio.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number</label>
+              <input class="form-input" type="tel" id="phone" name="phone" placeholder="+91 ···· ······">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="project-type">Plugin / Project <span class="form-required">*</span></label>
+              <select class="form-select" id="project-type" name="project-type" required>
+                <option value="">Select a plugin</option>
+                <option value="Azure Cutter Pro">Azure Cutter Pro</option>
+                <option value="Auto Pave">Auto Pave</option>
+                <option value="Pave Planner Pro">Pave Planner Pro</option>
+                <option value="Curves to Diamonds">Curves to Diamonds</option>
+                <option value="Single Line Pave">Single Line Pave</option>
+                <option value="Other">Other / New Tool</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="details">Customisation Details <span class="form-required">*</span></label>
+            <textarea class="form-textarea" id="details" name="details" placeholder="Describe what you need — the more detail, the better. Include specific parameters, workflows, or outputs you have in mind." required></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">Submit Customisation Request</button>
+          <p class="form-note">Our team will review your request and respond within 24 hours.</p>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
   <footer>
-    <div class="footer-content">
-      <p class="footer-text">© 2025 Modelling Studio HUB. All rights reserved.</p>
-      <p class="footer-text">Designed for 3D professionals worldwide.</p>
+    <div class="footer-inner">
+      <span class="footer-logo">Modelling Studio HUB</span>
+      <span class="footer-text">© 2025 MSH. All rights reserved.</span>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#plugins">All Plugins</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
     </div>
   </footer>
+
+  <script>
+    const html = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    html.setAttribute('data-theme', localStorage.getItem('msh-theme') || 'dark');
+    btn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('msh-theme', next);
+    });
+    const obs = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
 </body>
 </html>
