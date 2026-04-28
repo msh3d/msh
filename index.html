@@ -434,9 +434,6 @@
     .video-wrapper {
       max-width: 1000px;
       margin: 0 auto;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: var(--shadow-card);
       border: 1px solid var(--border);
       position: relative;
     }
@@ -445,15 +442,14 @@
       content: '';
       position: absolute;
       inset: -1px;
-      border-radius: 4px;
       padding: 1px;
       background: linear-gradient(135deg, var(--accent-gold) 0%, transparent 50%, var(--accent-gold) 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-      opacity: 0.3;
+      opacity: 0.25;
+      z-index: 1;
       pointer-events: none;
-      z-index: 0;
     }
 
     .video-wrapper iframe {
@@ -461,8 +457,6 @@
       aspect-ratio: 16/9;
       border: none;
       display: block;
-      position: relative;
-      z-index: 1;
     }
 
     /* ============================================
