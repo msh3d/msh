@@ -1,584 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pave Planner - Premium Rhino Plugin</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pave Planner Pro — Modelling Studio HUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --transition-theme: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease; }
+    [data-theme="dark"] {
+      --bg-base:#0c0c0e; --bg-surface:#141416; --bg-card:#1a1a1e; --bg-card-hover:#202026;
+      --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.14);
+      --text-primary:#f0ede8; --text-secondary:#8a8580; --text-muted:#4a4845;
+      --accent-gold:#c9a96e; --accent-gold-lt:#e8c99a; --accent-glow:rgba(201,169,110,0.12);
+      --shadow-card:0 8px 40px rgba(0,0,0,0.5); --nav-bg:rgba(12,12,14,0.9);
+      --tag-bg:rgba(201,169,110,0.1); --tag-color:#c9a96e; --hero-bg:#0a0a0c;
+    }
+    [data-theme="light"] {
+      --bg-base:#faf9f7; --bg-surface:#f4f2ee; --bg-card:#ffffff; --bg-card-hover:#f9f8f6;
+      --border:rgba(0,0,0,0.07); --border-strong:rgba(0,0,0,0.13);
+      --text-primary:#1a1714; --text-secondary:#6b6560; --text-muted:#b5b0aa;
+      --accent-gold:#9a7340; --accent-gold-lt:#c9a96e; --accent-glow:rgba(154,115,64,0.07);
+      --shadow-card:0 2px 20px rgba(0,0,0,0.08); --nav-bg:rgba(250,249,247,0.92);
+      --tag-bg:rgba(154,115,64,0.08); --tag-color:#9a7340; --hero-bg:#0f0f12;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg-base);color:var(--text-primary);overflow-x:hidden;transition:var(--transition-theme);line-height:1.6}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--accent-gold);border-radius:2px}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
+    nav{position:fixed;top:0;width:100%;background:var(--nav-bg);backdrop-filter:saturate(200%) blur(24px);-webkit-backdrop-filter:saturate(200%) blur(24px);z-index:1000;border-bottom:1px solid var(--border);transition:var(--transition-theme)}
+    .nav-container{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;height:56px}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text-primary);letter-spacing:0.04em;text-transform:uppercase}
+    .nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+    .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.3s}
+    .nav-links a:hover{color:var(--accent-gold)}
+    .nav-breadcrumb{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.1em}
+    .nav-breadcrumb span{color:var(--accent-gold)}
+    .theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-strong);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);transition:all 0.3s;position:relative;overflow:hidden}
+    .theme-toggle:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+    .theme-toggle svg{position:absolute;transition:transform 0.4s ease,opacity 0.4s ease}
+    .icon-sun{opacity:0;transform:rotate(-90deg) scale(0.5)}
+    .icon-moon{opacity:1;transform:rotate(0deg) scale(1)}
+    [data-theme="light"] .icon-sun{opacity:1;transform:rotate(0deg) scale(1)}
+    [data-theme="light"] .icon-moon{opacity:0;transform:rotate(90deg) scale(0.5)}
+    .hero{margin-top:56px;min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 32px 80px;background:var(--hero-bg);position:relative;overflow:hidden}
+    .hero-glow{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.12) 0%,transparent 65%);animation:pulse 8s ease-in-out infinite;pointer-events:none}
+    .hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 65%);animation:pulse 6s ease-in-out infinite reverse;top:20%;right:10%;pointer-events:none}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.15);opacity:1}}
+    .hero-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+    .hero-content{position:relative;z-index:2;max-width:800px}
+    .hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:24px;opacity:0;animation:fadeUp 0.8s ease 0.2s forwards}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,96px);font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:#f0ede8;margin-bottom:20px;opacity:0;animation:fadeUp 0.9s ease 0.35s forwards}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,24px);font-weight:300;font-style:italic;color:rgba(240,237,232,0.6);margin-bottom:44px;letter-spacing:0.02em;opacity:0;animation:fadeUp 0.9s ease 0.5s forwards}
+    .hero-cta{opacity:0;animation:fadeUp 0.9s ease 0.65s forwards;display:flex;gap:16px;justify-content:center}
+    .btn-gold{background:var(--accent-gold);color:#0c0c0e;padding:14px 36px;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s;display:inline-block}
+    .btn-gold:hover{background:var(--accent-gold-lt);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,169,110,0.3)}
+    .btn-outline-hero{background:transparent;color:rgba(240,237,232,0.85);padding:14px 36px;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(240,237,232,0.25);transition:all 0.3s;display:inline-block}
+    .btn-outline-hero:hover{border-color:var(--accent-gold);color:var(--accent-gold)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:14px}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:300;letter-spacing:-0.01em;line-height:1.1;color:var(--text-primary);margin-bottom:14px}
+    .section-subtitle{font-size:16px;color:var(--text-secondary);font-weight:300;line-height:1.75}
+    .divider{width:48px;height:1px;background:var(--accent-gold);margin:18px auto;opacity:0.5}
+    .section-header{text-align:center;margin-bottom:80px}
+    .features-section{padding:140px 32px;max-width:1200px;margin:0 auto}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border)}
+    .feature-card{background:var(--bg-base);padding:52px 44px;text-align:center;transition:background 0.3s;position:relative;overflow:hidden}
+    .feature-card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:1px;background:var(--accent-gold);transition:width 0.4s}
+    .feature-card:hover{background:var(--bg-card)}.feature-card:hover::after{width:60%}
+    .feature-icon{width:44px;height:44px;margin:0 auto 24px;color:var(--accent-gold)}
+    .feature-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text-primary);margin-bottom:12px;letter-spacing:0.02em}
+    .feature-desc{font-size:14px;color:var(--text-secondary);line-height:1.75;font-weight:300}
+    .video-section{padding:120px 32px;background:var(--bg-surface);transition:var(--transition-theme)}
+    .video-wrapper{max-width:1000px;margin:0 auto;border:1px solid var(--border);position:relative;overflow:hidden}
+    .video-wrapper::before{content:'';position:absolute;inset:-1px;padding:1px;background:linear-gradient(135deg,var(--accent-gold) 0%,transparent 50%,var(--accent-gold) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0.25;z-index:1;pointer-events:none}
+    .video-wrapper iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+    .specs-section{padding:120px 32px;background:var(--bg-base);transition:var(--transition-theme)}
+    .specs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;max-width:1100px;margin:0 auto;background:var(--border)}
+    .spec-item{background:var(--bg-base);padding:52px 40px;text-align:center;transition:background 0.3s}
+    .spec-item:hover{background:var(--bg-card)}
+    .spec-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:14px}
+    .spec-value{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--text-primary);letter-spacing:0.01em}
+    .cta-section{padding:140px 32px;background:var(--hero-bg);text-align:center;position:relative;overflow:hidden}
+    .cta-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.08) 0%,transparent 65%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .cta-content{position:relative;z-index:1}
+    .cta-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;color:#f0ede8;margin-bottom:16px;letter-spacing:-0.01em;line-height:1.1}
+    .cta-subtitle{font-size:16px;color:rgba(240,237,232,0.5);margin-bottom:48px;font-weight:300}
+    .cta-buttons{display:flex;gap:16px;justify-content:center}
+    .pricing-section{padding:140px 32px;background:var(--bg-surface);transition:var(--transition-theme)}
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:1100px;margin:0 auto}
+    .pricing-card{background:var(--bg-card);border:1px solid var(--border);padding:56px 44px;text-align:center;position:relative;transition:all 0.4s}
+    .pricing-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-card);transform:translateY(-4px)}
+    .pricing-card.featured{border-color:var(--accent-gold);background:var(--bg-card-hover)}
+    .pricing-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--accent-gold);color:#0c0c0e;padding:5px 20px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+    .pricing-period{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px}
+    .pricing-amount{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text-primary);letter-spacing:-0.02em;line-height:1;margin-bottom:8px}
+    .pricing-duration{font-size:13px;color:var(--text-muted);margin-bottom:40px;font-weight:300}
+    .pricing-features{list-style:none;margin-bottom:44px;text-align:left}
+    .pricing-features li{padding:10px 0;font-size:14px;color:var(--text-secondary);display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+    .pricing-features li:last-child{border-bottom:none}
+    .pricing-features li::before{content:'';width:4px;height:4px;background:var(--accent-gold);border-radius:50%;flex-shrink:0}
+    .btn-pricing{display:block;text-align:center;padding:14px 32px;background:transparent;border:1px solid var(--accent-gold);color:var(--accent-gold);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;transition:all 0.3s}
+    .btn-pricing:hover,.pricing-card.featured .btn-pricing{background:var(--accent-gold);color:#0c0c0e}
+    footer{background:var(--bg-surface);border-top:1px solid var(--border);padding:48px 32px;transition:var(--transition-theme)}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--text-secondary);letter-spacing:0.06em;text-transform:uppercase}
+    .footer-text{font-size:12px;color:var(--text-muted)}
+    .footer-text a{color:var(--accent-gold);text-decoration:none}
+    .footer-links{display:flex;gap:24px;list-style:none}
+    .footer-links a{color:var(--text-muted);text-decoration:none;font-size:12px;letter-spacing:0.05em;transition:color 0.3s}
+    .footer-links a:hover{color:var(--accent-gold)}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}
+    @media(max-width:900px){.specs-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.nav-links{display:none}.footer-inner{flex-direction:column;gap:16px;text-align:center}}
+    @media(max-width:600px){.hero-cta,.cta-buttons{flex-direction:column;align-items:center}}
+  </style>
 
-        :root {
-            --primary: #1d1d1f;
-            --secondary: #86868b;
-            --accent: #0071e3;
-            --light: #f5f5f7;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--white);
-            color: var(--primary);
-            overflow-x: hidden;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 0 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 48px;
-        }
-
-        .logo {
-            font-size: 21px;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            letter-spacing: -0.01em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 36px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            transition: opacity 0.3s;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.6;
-        }
-
-        .hero {
-            margin-top: 48px;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 100px 20px 60px;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero:before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 113, 227, 0.3) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-        }
-
-        .hero-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 16px;
-        }
-
-        .hero-title {
-            font-size: 80px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1.05;
-            margin-bottom: 20px;
-        }
-
-        .hero-subtitle {
-            font-size: 28px;
-            font-weight: 400;
-            color: var(--secondary);
-            margin-bottom: 40px;
-            letter-spacing: -0.01em;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: var(--white);
-            padding: 12px 28px;
-            border-radius: 980px;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 400;
-            display: inline-block;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: #0077ed;
-            transform: scale(1.05);
-        }
-
-        .features-section {
-            padding: 120px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 48px;
-            font-weight: 600;
-            letter-spacing: -0.015em;
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-card {
-            padding: 48px 32px;
-            background: var(--light);
-            border-radius: 18px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 24px;
-            display: block;
-        }
-
-        .feature-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
-        }
-
-        .feature-description {
-            font-size: 17px;
-            color: var(--secondary);
-            line-height: 1.5;
-        }
-
-        .gallery-section {
-            padding: 120px 20px;
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .gallery-section .section-title {
-            color: var(--white);
-        }
-
-        .video-showcase {
-            max-width: 980px;
-            margin: 0 auto;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .video-showcase iframe {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border: none;
-        }
-
-        .pricing-section {
-            padding: 120px 20px;
-            background: var(--light);
-        }
-
-        .pricing-intro {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 80px;
-        }
-
-        .pricing-intro p {
-            font-size: 21px;
-            color: var(--secondary);
-            line-height: 1.5;
-            margin-top: 16px;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: var(--white);
-            border-radius: 18px;
-            padding: 48px 40px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .pricing-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent);
-            color: var(--white);
-            padding: 4px 16px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .pricing-period {
-            font-size: 17px;
-            color: var(--secondary);
-            margin-bottom: 8px;
-        }
-
-        .pricing-amount {
-            font-size: 64px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 4px;
-        }
-
-        .pricing-duration {
-            font-size: 17px;
-            color: var(--secondary);
-            margin-bottom: 32px;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 32px;
-            text-align: left;
-        }
-
-        .pricing-features li {
-            padding: 12px 0;
-            font-size: 15px;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .pricing-features li:before {
-            content: "✓";
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 20px;
-        }
-
-        .specs-section {
-            padding: 120px 20px;
-            background: var(--white);
-        }
-
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            max-width: 1000px;
-            margin: 60px auto 0;
-        }
-
-        .spec-item {
-            text-align: center;
-        }
-
-        .spec-label {
-            font-size: 12px;
-            color: var(--secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 8px;
-        }
-
-        .spec-value {
-            font-size: 21px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .cta-section {
-            padding: 120px 20px;
-            background: var(--primary);
-            color: var(--white);
-            text-align: center;
-        }
-
-        .cta-title {
-            font-size: 56px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 24px;
-        }
-
-        .cta-subtitle {
-            font-size: 21px;
-            color: var(--secondary);
-            margin-bottom: 40px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            padding: 12px 28px;
-            border-radius: 980px;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 400;
-            border: 1px solid var(--white);
-            transition: all 0.3s;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary);
-        }
-
-        footer {
-            background: var(--light);
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .footer-text {
-            font-size: 12px;
-            color: var(--secondary);
-            margin-bottom: 8px;
-        }
-
-        .footer-text a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 48px;
-            }
-
-            .hero-subtitle {
-                font-size: 21px;
-            }
-
-            .section-title {
-                font-size: 32px;
-            }
-
-            .cta-title {
-                font-size: 36px;
-            }
-
-            .pricing-card.featured {
-                transform: scale(1);
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                max-width: 300px;
-                margin: 0 auto;
-            }
-
-            .nav-links {
-                gap: 20px;
-            }
-
-            .nav-links a {
-                font-size: 11px;
-            }
-        }
-    </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">Home</a>
-            <ul class="nav-links">
-                <li><a href="index.html#plugins">All Plugins</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="index.html#contact">Contact Us</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav><div class="nav-container">
+    <a href="index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--accent-gold)" stroke-width="1.5" fill="none"/><polygon points="14,8 20,11 20,17 14,20 8,17 8,11" stroke="var(--accent-gold)" stroke-width="1" fill="none" opacity="0.5"/><circle cx="14" cy="14" r="2" fill="var(--accent-gold)"/></svg><span class="logo-text">MSH Studio</span></a>
+    <div class="nav-breadcrumb">Plugins / <span>Pave Planner Pro</span></div>
+    <ul class="nav-links"><li><a href="index.html#plugins">All Plugins</a></li><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="index.html#contact">Contact</a></li></ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+  </div></nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-label">Popular</div>
-            <h1 class="hero-title">Pave Planner</h1>
-            <p class="hero-subtitle">Automate pave setting metal with precision and control.</p>
-            <a href="#pricing" class="btn-primary">See Pricing</a>
-        </div>
-    </section>
+  <section class="hero">
+    <div class="hero-grid-lines"></div><div class="hero-glow"></div><div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Popular · Rhino Plugin</p>
+      <h1 class="hero-title">Pave Planner Pro</h1>
+      <p class="hero-subtitle">Automate pave setting with precision, control, and intelligent visualisation</p>
+      <div class="hero-cta"><a href="#pricing" class="btn-gold">See Pricing</a><a href="#features" class="btn-outline-hero">Explore Features</a></div>
+    </div>
+  </section>
 
-    <section id="features" class="features-section">
-        <h2 class="section-title">What Makes It Special</h2>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">✨</span>
-                <h3 class="feature-title">Automated Construction</h3>
-                <p class="feature-description">
-                    Automatically place stones with intelligent algorithms that understand your design requirements.
-                </p>
-            </div>
+  <section id="features" class="features-section">
+    <div class="section-header reveal"><p class="section-label">Capabilities</p><h2 class="section-title">What Makes It Special</h2><div class="divider"></div><p class="section-subtitle">The most versatile pave planning tool in Rhino.</p></div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 6L38 14V30L22 38L6 30V14Z"/><circle cx="14" cy="18" r="4"/><circle cx="30" cy="18" r="4"/><circle cx="22" cy="30" r="4"/><circle cx="22" cy="18" r="4" fill="currentColor" opacity="0.3"/></svg><h3 class="feature-title">Automated Construction</h3><p class="feature-desc">Intelligently place stones with algorithms that understand your design intent and boundary constraints automatically.</p></div>
+      <div class="feature-card reveal reveal-delay-2"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 22h28M22 8v28M8 8l28 28M36 8L8 36"/><circle cx="22" cy="22" r="8"/></svg><h3 class="feature-title">Offset Generation</h3><p class="feature-desc">Generate complex pave patterns with multi-zone offset control. Choose from presets or create fully custom arrangements.</p></div>
+      <div class="feature-card reveal reveal-delay-3"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="22" cy="22" r="16"/><path d="M22 6v16l10 6"/><circle cx="22" cy="22" r="3" fill="currentColor"/></svg><h3 class="feature-title">Real-Time Preview</h3><p class="feature-desc">See your pave design update live as you tweak parameters. No recalculation delays — just instant visual feedback.</p></div>
+      <div class="feature-card reveal reveal-delay-1"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 30 Q15 15, 22 22 Q29 29, 36 14"/><ellipse cx="22" cy="22" rx="14" ry="8" transform="rotate(-20 22 22)"/></svg><h3 class="feature-title">Surface Mapping</h3><p class="feature-desc">Works on flat, curved, and complex freeform geometries with automatic flow and orientation adaptation.</p></div>
+      <div class="feature-card reveal reveal-delay-2"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="22" x2="36" y2="22"/><line x1="22" y1="8" x2="22" y2="36"/><circle cx="22" cy="22" r="6"/><circle cx="10" cy="22" r="3"/><circle cx="34" cy="22" r="3"/></svg><h3 class="feature-title">Precision Control</h3><p class="feature-desc">Fine-tune every parameter — stone spacing, boundary clearances, row offsets, and orientation angles.</p></div>
+      <div class="feature-card reveal reveal-delay-3"><svg class="feature-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 34l8-12 6 8 5-6 5 10"/><rect x="6" y="6" width="32" height="28" rx="2"/></svg><h3 class="feature-title">Production Ready</h3><p class="feature-desc">Manufacturing-grade outputs with proper prong placement guides and seat cutting references for direct production use.</p></div>
+    </div>
+  </section>
 
-            <div class="feature-card">
-                <span class="feature-icon">🎯</span>
-                <h3 class="feature-title">Offset Generation</h3>
-                <p class="feature-description">
-                    Generate complex pave patterns instantly. Choose from presets or create custom arrangements.
-                </p>
-            </div>
+  <section class="video-section"><div class="section-header reveal"><p class="section-label">Demo</p><h2 class="section-title">See It in Action</h2><div class="divider"></div></div>
+    <div class="video-wrapper reveal"><iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" title="Pave Planner Pro Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+  </section>
 
-            <div class="feature-card">
-                <span class="feature-icon">⚡</span>
-                <h3 class="feature-title">Real-Time Preview</h3>
-                <p class="feature-description">
-                    See your pave design update in real-time as you adjust parameters. No waiting for calculations.
-                </p>
-            </div>
+  <section class="specs-section"><div class="section-header reveal"><p class="section-label">Technical</p><h2 class="section-title">Specifications</h2><div class="divider"></div></div>
+    <div class="specs-grid reveal"><div class="spec-item"><div class="spec-label">Compatibility</div><div class="spec-value">Rhino 7, 8+</div></div><div class="spec-item"><div class="spec-label">Platform</div><div class="spec-value">Windows & Mac</div></div><div class="spec-item"><div class="spec-label">File Size</div><div class="spec-value">&lt; 5 MB</div></div><div class="spec-item"><div class="spec-label">License</div><div class="spec-value">Single User</div></div></div>
+  </section>
 
-            <div class="feature-card">
-                <span class="feature-icon">🔧</span>
-                <h3 class="feature-title">Surface Mapping</h3>
-                <p class="feature-description">
-                    Works on any surface shape - flat, curved, or complex geometries with automatic adaptation.
-                </p>
-            </div>
+  <section id="pricing" class="pricing-section"><div class="section-header reveal"><p class="section-label">Investment</p><h2 class="section-title">Simple Pricing</h2><div class="divider"></div><p class="section-subtitle">Included in all MSH Studio subscription plans.</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1"><p class="pricing-period">Quarterly</p><div class="pricing-amount">₹29,999</div><p class="pricing-duration">per quarter · single user</p><ul class="pricing-features"><li>All plugins included</li><li>Regular updates</li><li>Email support</li><li>Commercial license</li></ul><a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a></div>
+      <div class="pricing-card featured reveal reveal-delay-2"><div class="pricing-badge">Best Value</div><p class="pricing-period">Annual</p><div class="pricing-amount">₹95,999</div><p class="pricing-duration">per year · single user · save 11%</p><ul class="pricing-features"><li>All plugins included</li><li>Priority support</li><li>Regular updates</li><li>Email support</li><li>Commercial license</li></ul><a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a></div>
+      <div class="pricing-card reveal reveal-delay-3"><p class="pricing-period">Half-Yearly</p><div class="pricing-amount">₹49,999</div><p class="pricing-duration">per 6 months · save 8%</p><ul class="pricing-features"><li>All plugins included</li><li>Regular updates</li><li>Email support</li><li>Commercial license</li></ul><a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a></div>
+    </div>
+  </section>
 
-            <div class="feature-card">
-                <span class="feature-icon">📐</span>
-                <h3 class="feature-title">Precision Control</h3>
-                <p class="feature-description">
-                    Fine-tune every parameter with intuitive controls for exact spacing and alignment.
-                </p>
-            </div>
+  <section class="cta-section"><div class="cta-glow"></div><div class="cta-content reveal"><p class="section-label" style="text-align:center">Ready?</p><h2 class="cta-title">Transform your workflow today</h2><p class="cta-subtitle">Join professionals who save hours every single day</p><div class="cta-buttons"><a href="mailto:msh3dstudio@gmail.com" class="btn-gold">Get Started</a><a href="index.html#contact" class="btn-outline-hero">Contact Sales</a></div></div></section>
 
-            <div class="feature-card">
-                <span class="feature-icon">✅</span>
-                <h3 class="feature-title">Production Ready</h3>
-                <p class="feature-description">
-                    Generates manufacturing-ready geometry with proper prong placement and seat cutting guides.
-                </p>
-            </div>
-        </div>
-    </section>
+  <footer><div class="footer-inner"><span class="footer-logo">Modelling Studio HUB</span><span class="footer-text">© 2025 MSH. <a href="mailto:msh3dstudio@gmail.com">msh3dstudio@gmail.com</a></span><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="index.html#plugins">All Plugins</a></li><li><a href="customisation-request.html">Customise</a></li></ul></div></footer>
 
-    <section class="gallery-section">
-        <h2 class="section-title">See It In Action</h2>
-        <div class="video-showcase">
-            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
-        </div>
-    </section>
-
-    <section class="specs-section">
-        <h2 class="section-title">Technical Specifications</h2>
-        
-        <div class="specs-grid">
-            <div class="spec-item">
-                <div class="spec-label">Compatibility</div>
-                <div class="spec-value">Rhino 7, 8 and above</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-label">Platform</div>
-                <div class="spec-value">Windows & Mac</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-label">File Size</div>
-                <div class="spec-value">Less than 5 MB</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-label">License Type</div>
-                <div class="spec-value">Single User</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <h2 class="cta-title">Ready to transform your workflow?</h2>
-        <p class="cta-subtitle">Join professionals who save hours every day</p>
-        <div class="cta-buttons">
-            <a href="#pricing" class="btn-primary">Subscribe Now</a>
-            <a href="index.html#contact" class="btn-secondary">Contact Sales</a>
-        </div>
-    </section>
-
-    <footer>
-        <p class="footer-text">© 2025 MSH. All rights reserved.</p>
-        <p class="footer-text">Questions? Email us at <a href="mailto:msh3dstudio@gmail.com">msh3dstudio@gmail.com</a></p>
-    </footer>
+  <script>
+    const html=document.documentElement;const btn=document.getElementById('themeToggle');
+    html.setAttribute('data-theme',localStorage.getItem('msh-theme')||'dark');
+    btn.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('msh-theme',n);});
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}}));
+  </script>
 </body>
 </html>
