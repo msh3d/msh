@@ -72,7 +72,9 @@ footer div{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--mut
 
 <section class="form-shell">
 <div class="form-top"><h2>Trial Registration</h2><small>01 / 01</small></div>
-<form id="trialForm" action="FORMS_APP_FORM_ACTION_OR_EMBED" method="post">
+<form id="trialForm" action="https://formspree.io/f/mvgwravk" method="post">
+<input type="hidden" name="form_type" value="MSH Trial License">
+<input type="hidden" name="_subject" value="MSH Trial License Request">
 <div class="field"><label for="name">Full Name <span class="req">*</span></label><input id="name" name="full_name" type="text" autocomplete="name" required></div>
 <div class="field"><label for="email">Email Address <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
 
@@ -112,12 +114,7 @@ document.querySelectorAll('input[name="registration_type"]').forEach(r=>r.addEve
   const business=r.checked && r.value==='Business / Company';
   if(business){companyWrap.style.display='block';company.required=true}else{companyWrap.style.display='none';company.required=false;company.value=''}
 }));
-document.getElementById('trialForm').addEventListener('submit',e=>{
-  if(e.currentTarget.getAttribute('action')==='FORMS_APP_FORM_ACTION_OR_EMBED'){
-    e.preventDefault();
-    alert('Prototype only — connect this form to your forms.app form before publishing.');
-  }
-});
+
 </script>
 </body>
 </html>
