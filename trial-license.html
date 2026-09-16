@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSH Studio — Start Your Trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--transition:color .4s ease,background-color .4s ease,border-color .4s ease,box-shadow .4s ease}
+[data-theme="dark"]{--bg:#0c0c0e;--surface:#141416;--card:#1a1a1e;--card2:#202026;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);--text:#f0ede8;--muted:#8a8580;--dim:#4a4845;--gold:#c9a96e;--gold2:#e8c99a;--glass:rgba(12,12,14,.9)}
+[data-theme="light"]{--bg:#faf9f7;--surface:#f4f2ee;--card:#fff;--card2:#f9f8f6;--border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.14);--text:#1a1714;--muted:#6b6560;--dim:#b5b0aa;--gold:#9a7340;--gold2:#c9a96e;--glass:rgba(250,249,247,.93)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;transition:var(--transition)}
+body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E")}
+nav{height:56px;position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--glass);backdrop-filter:saturate(200%) blur(24px);border-bottom:1px solid var(--border);transition:var(--transition)}
+.nav-inner{height:56px;max-width:1200px;margin:auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo svg{width:28px;height:28px}
+.logo span{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.nav-links a:hover{color:var(--gold)}
+.theme{width:40px;height:40px;border:1px solid var(--border2);background:transparent;border-radius:50%;color:var(--muted);cursor:pointer}
+.page{padding:56px 24px 80px;min-height:100vh}
+.hero{text-align:center;max-width:760px;margin:0 auto;padding:88px 0 48px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,78px);font-weight:300;line-height:1.02;letter-spacing:-.02em}
+h1 em{color:var(--gold2);font-style:italic}
+.hero p{max-width:560px;margin:22px auto 0;color:var(--muted);font-weight:300}
+.divider{width:48px;height:1px;background:var(--gold);opacity:.55;margin:25px auto}
+.form-shell{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--border);box-shadow:0 18px 60px rgba(0,0,0,.22);padding:42px}
+.form-top{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:30px}
+.form-top small{font-family:'DM Mono',monospace;color:var(--dim);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.form-top h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400}
+.field{margin-bottom:23px}
+label{display:block;font-size:12px;letter-spacing:.04em;color:var(--text);margin-bottom:8px}
+.req{color:var(--gold)}
+input,select{width:100%;height:48px;padding:0 14px;background:var(--surface);border:1px solid var(--border2);color:var(--text);font:400 14px 'DM Sans',sans-serif;outline:none;border-radius:2px;transition:.25s}
+input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.08)}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice span{height:48px;border:1px solid var(--border2);background:var(--surface);display:flex;align-items:center;padding:0 14px;color:var(--muted);font-size:13px;cursor:pointer;transition:.25s}
+.choice input:checked+span{border-color:var(--gold);color:var(--text);background:rgba(201,169,110,.07)}
+#companyWrap{display:none}
+.note{font-size:11px;color:var(--dim);margin-top:7px}
+.submit{width:100%;height:52px;border:0;border-radius:2px;background:var(--gold);color:#0c0c0e;font:600 12px 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:8px}
+.submit:hover{background:var(--gold2);transform:translateY(-1px)}
+.terms{text-align:center;font-size:10px;color:var(--dim);margin-top:16px}
+footer{border-top:1px solid var(--border);background:var(--surface);padding:34px 24px;text-align:center}
+footer div{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:700px){.nav-links{display:none}.nav-inner{padding:0 18px}.page{padding-left:16px;padding-right:16px}.hero{padding-top:72px}.form-shell{padding:28px 20px}.choice-grid{grid-template-columns:1fr}h1{font-size:52px}}
+</style>
+</head>
+<body>
+<nav><div class="nav-inner">
+<a class="logo" href="index.html"><svg viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--gold)" stroke-width="1.5"/><polygon points="14,8 20,11 20,17 14,20 8,17 8,11" stroke="var(--gold)" opacity=".5"/><circle cx="14" cy="14" r="2" fill="var(--gold)"/></svg><span>MSH Studio</span></a>
+<ul class="nav-links"><li><a href="index.html#plugins">Plugins</a></li><li><a href="index.html#features">Features</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="index.html#contact">Contact</a></li></ul>
+<button class="theme" id="theme" aria-label="Toggle theme">◐</button>
+</div></nav>
+
+<main class="page">
+<section class="hero">
+<div class="eyebrow">MSH Studio · Trial License</div>
+<h1>Try MSH.<br><em>Build Faster.</em></h1>
+<div class="divider"></div>
+<p>Tell us a little about yourself and how you work with Rhino. We'll use these details to prepare your trial license.</p>
+</section>
+
+<section class="form-shell">
+<div class="form-top"><h2>Trial Registration</h2><small>01 / 01</small></div>
+<form id="trialForm" action="FORMS_APP_FORM_ACTION_OR_EMBED" method="post">
+<div class="field"><label for="name">Full Name <span class="req">*</span></label><input id="name" name="full_name" type="text" autocomplete="name" required></div>
+<div class="field"><label for="email">Email Address <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
+
+<div class="field"><label>Registration Type <span class="req">*</span></label>
+<div class="choice-grid">
+<label class="choice"><input type="radio" name="registration_type" value="Individual" required><span>Individual</span></label>
+<label class="choice"><input type="radio" name="registration_type" value="Business / Company"><span>Business / Company</span></label>
+</div></div>
+
+<div class="field" id="companyWrap"><label for="company">Business / Company Name <span class="req">*</span></label><input id="company" name="company_name" type="text" autocomplete="organization"></div>
+
+<div class="field"><label for="role">Your Role <span class="req">*</span></label>
+<select id="role" name="role" required><option value="">Select your role</option><option>CAD Designer</option><option>CAD Head / Manager</option><option>Product Development</option><option>Owner / Partner</option><option>Production / Manufacturing</option><option>Other</option></select></div>
+
+<div class="field"><label for="software">Current CAD Software <span class="req">*</span></label>
+<select id="software" name="cad_software" required><option value="">Select software</option><option>Rhino 8</option><option>Rhino 7</option><option>MatrixGold</option><option>Rhino + Other Jewellery Plugins</option><option>Other</option></select></div>
+
+<div class="field"><label for="users">Potential MSH Users <span class="req">*</span></label>
+<select id="users" name="potential_users" required><option value="">Select number of users</option><option>1 user</option><option>2–5 users</option><option>6–10 users</option><option>10+ users</option></select></div>
+
+<div class="field"><label for="source">How did you hear about MSH?</label>
+<select id="source" name="lead_source"><option value="">Select an option</option><option>Google Search</option><option>LinkedIn</option><option>Instagram</option><option>YouTube</option><option>Referral</option><option>Other</option></select></div>
+
+<button class="submit" type="submit">Request Free Trial</button>
+<p class="terms">By submitting, you agree to the MSH Terms of Use and Privacy Policy.</p>
+</form>
+</section>
+</main>
+<footer><div>Modelling Studio HUB</div></footer>
+
+<script>
+const root=document.documentElement, theme=document.getElementById('theme');
+const saved=localStorage.getItem('msh-theme')||'dark'; root.dataset.theme=saved;
+theme.onclick=()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('msh-theme',next)};
+const companyWrap=document.getElementById('companyWrap'), company=document.getElementById('company');
+document.querySelectorAll('input[name="registration_type"]').forEach(r=>r.addEventListener('change',()=>{
+  const business=r.checked && r.value==='Business / Company';
+  if(business){companyWrap.style.display='block';company.required=true}else{companyWrap.style.display='none';company.required=false;company.value=''}
+}));
+document.getElementById('trialForm').addEventListener('submit',e=>{
+  if(e.currentTarget.getAttribute('action')==='FORMS_APP_FORM_ACTION_OR_EMBED'){
+    e.preventDefault();
+    alert('Prototype only — connect this form to your forms.app form before publishing.');
+  }
+});
+</script>
+</body>
+</html>
