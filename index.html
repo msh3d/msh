@@ -15,6 +15,11 @@
        ============================================ */
     :root {
       --transition-theme: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-pill: 999px;
     }
 
     [data-theme="dark"] {
@@ -102,6 +107,51 @@
     }
 
     /* ============================================
+       AMBIENT BACKGROUND GRADIENT BLOBS
+       ============================================ */
+    .bg-atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .bg-atmosphere .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.3;
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 560px; height: 560px;
+      top: -140px; left: -120px;
+      background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+      animation: floatBlob 24s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 620px; height: 620px;
+      bottom: -180px; right: -140px;
+      background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+      animation: floatBlob 28s ease-in-out infinite reverse;
+    }
+
+    .blob-3 {
+      width: 440px; height: 440px;
+      top: 42%; left: 58%;
+      background: radial-gradient(circle, var(--accent-gold-lt) 0%, transparent 70%);
+      animation: floatBlob 32s ease-in-out infinite;
+    }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(50px, -40px) scale(1.08); }
+    }
+
+    /* ============================================
        ROTATING BACKGROUND LOGO
        ============================================ */
     .bg-serpent {
@@ -112,9 +162,9 @@
       max-width: none;
       height: auto;
       transform: translate(-50%, -50%) rotate(0deg);
-      opacity: 0.08;
+      opacity: 0.1;
       pointer-events: none;
-      z-index: -1;
+      z-index: -2;
       will-change: transform;
     }
 
@@ -198,7 +248,7 @@
       height: 36px;
       padding: 0 15px;
       border: 1px solid var(--accent-gold);
-      border-radius: 2px;
+      border-radius: var(--radius-pill);
       color: var(--accent-gold);
       text-decoration: none;
       font-size: 10px;
@@ -262,22 +312,6 @@
       padding: 100px 32px 80px;
       position: relative;
       overflow: hidden;
-    }
-
-    .hero-video-bg {
-      position: absolute;
-      top: 140px; right: 0; bottom: 0; left: 0;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .hero-video-bg iframe {
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 160%; height: 160%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      filter: brightness(0.55) saturate(0.85);
     }
 
     .hero-overlay {
@@ -352,17 +386,35 @@
       animation: fadeSlideUp 0.9s ease 0.8s forwards;
     }
 
+    .btn-gold, .btn-outline {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-gold::before, .btn-outline::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -75%;
+      width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s var(--ease);
+      pointer-events: none;
+    }
+
+    .btn-gold:hover::before, .btn-outline:hover::before { left: 125%; }
+
     .btn-gold {
       background: var(--accent-gold);
       color: #0c0c0e;
       padding: 14px 36px;
-      border-radius: 2px;
+      border-radius: var(--radius-pill);
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      transition: all 0.3s;
+      transition: all 0.3s var(--ease);
       border: none;
       cursor: pointer;
     }
@@ -374,22 +426,25 @@
     }
 
     .btn-outline {
-      background: transparent;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
       color: rgba(255,255,255,0.85);
       padding: 14px 36px;
-      border-radius: 2px;
+      border-radius: var(--radius-pill);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       border: 1px solid rgba(255,255,255,0.3);
-      transition: all 0.3s;
+      transition: all 0.3s var(--ease);
     }
 
     .btn-outline:hover {
       border-color: var(--accent-gold);
       color: var(--accent-gold);
+      transform: translateY(-2px);
     }
 
     /* Scroll indicator */
@@ -480,6 +535,9 @@
       max-width: 1000px;
       margin: 0 auto;
       border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
       position: relative;
     }
 
@@ -497,11 +555,13 @@
       pointer-events: none;
     }
 
-    .video-wrapper iframe {
+    .video-wrapper iframe,
+    .video-wrapper video {
       width: 100%;
       aspect-ratio: 16/9;
       border: none;
       display: block;
+      object-fit: cover;
     }
 
     /* ============================================
@@ -520,17 +580,20 @@
 
     .plugin-grid {
       display: grid;
-      gap: 2px;
+      gap: 20px;
     }
 
     .plugin-card {
       display: grid;
       grid-template-columns: 1fr 1fr;
       background: var(--bg-card);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
       border: 1px solid var(--border);
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
       position: relative;
       overflow: hidden;
     }
@@ -579,7 +642,7 @@
       background: var(--tag-bg);
       color: var(--tag-color);
       padding: 4px 12px;
-      border-radius: 2px;
+      border-radius: var(--radius-pill);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.1em;
@@ -695,7 +758,7 @@
       width: 36px;
       height: 36px;
       border: 1px solid var(--border-strong);
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -729,7 +792,7 @@
       backdrop-filter: blur(18px) saturate(160%);
       -webkit-backdrop-filter: blur(18px) saturate(160%);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: var(--radius-lg);
       padding: 20px 24px;
       display: flex;
       align-items: flex-start;
@@ -749,7 +812,7 @@
       width: 36px;
       height: 36px;
       background: var(--tag-bg);
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -780,7 +843,7 @@
       color: var(--accent-gold);
       background: var(--tag-bg);
       padding: 2px 6px;
-      border-radius: 2px;
+      border-radius: var(--radius-pill);
       text-transform: uppercase;
       margin-top: 8px;
       display: inline-block;
@@ -803,23 +866,29 @@
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
+      gap: 20px;
       max-width: 1100px;
       margin: 0 auto;
-      background: var(--border);
     }
 
     .feature-item {
       background: var(--bg-base);
-      backdrop-filter: blur(14px) saturate(150%);
-      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
       padding: 56px 48px;
       text-align: center;
       position: relative;
-      transition: background 0.3s;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
 
-    .feature-item:hover { background: var(--bg-card); }
+    .feature-item:hover {
+      background: var(--bg-card);
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+    }
 
     .feature-icon {
       width: 52px;
@@ -861,26 +930,28 @@
     .pricing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 20px;
       max-width: 1100px;
       margin: 0 auto;
     }
 
     .pricing-card {
       background: var(--bg-card);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
       border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
       padding: 56px 44px;
       text-align: center;
       position: relative;
-      transition: all 0.4s;
+      transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease), transform 0.4s var(--ease), background 0.4s var(--ease);
     }
 
     .pricing-card:hover {
       border-color: var(--border-strong);
-      box-shadow: var(--shadow-card);
-      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+      transform: translateY(-6px);
     }
 
     .pricing-card.featured {
@@ -896,6 +967,7 @@
       background: var(--accent-gold);
       color: #0c0c0e;
       padding: 5px 20px;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -998,22 +1070,28 @@
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
+      gap: 20px;
       max-width: 1200px;
       margin: 0 auto;
-      background: var(--border);
     }
 
     .contact-item {
       background: var(--bg-base);
-      backdrop-filter: blur(14px) saturate(150%);
-      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
       padding: 48px 36px;
       text-align: center;
-      transition: background 0.3s;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease);
     }
 
-    .contact-item:hover { background: var(--bg-card); }
+    .contact-item:hover {
+      background: var(--bg-card);
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+    }
 
     .contact-icon {
       width: 36px;
@@ -1171,6 +1249,12 @@
 </head>
 <body>
 
+  <div class="bg-atmosphere" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
   <img class="bg-serpent" id="bgSerpent" src="msh-serpent-logo.png" alt="" aria-hidden="true">
 
   <!-- ================================================
@@ -1223,9 +1307,6 @@
        HERO
   ================================================ -->
   <section class="hero">
-    <div class="hero-video-bg">
-      <iframe src="https://www.youtube.com/embed/8-JXkEX41_4?autoplay=1&mute=1&loop=1&playlist=8-JXkEX41_4&controls=0&showinfo=0&rel=0&modestbranding=1&fs=0&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    </div>
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -1241,20 +1322,6 @@
 
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ================================================
-       VIDEO SECTION
-  ================================================ -->
-  <section class="video-section">
-    <div class="section-header reveal">
-      <p class="section-label">Studio Showcase</p>
-      <h2 class="section-title">See It in Action</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="video-wrapper reveal">
-      <iframe src="https://www.youtube.com/embed/8-JXkEX41_4" title="Modelling Studio HUB Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </section>
 
@@ -1826,6 +1893,23 @@
         </ul>
         <a href="mailto:msh3dstudio@gmail.com" class="btn-pricing">Subscribe</a>
       </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       VIDEO SHOWCASE SECTION
+  ================================================ -->
+  <section class="video-section">
+    <div class="section-header reveal">
+      <p class="section-label">Studio Showcase</p>
+      <h2 class="section-title">See It in Action</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="video-wrapper reveal">
+      <video autoplay muted loop playsinline preload="metadata"
+             poster="assets/msh-demo-poster.jpg">
+        <source src="assets/msh-demo.mp4" type="video/mp4">
+      </video>
     </div>
   </section>
 
