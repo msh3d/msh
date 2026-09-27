@@ -100,6 +100,23 @@
     }
 
     /* ============================================
+       ROTATING BACKGROUND LOGO
+       ============================================ */
+    .bg-serpent {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 700px;
+      max-width: none;
+      height: auto;
+      transform: translate(-50%, -50%) rotate(0deg);
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: -1;
+      will-change: transform;
+    }
+
+    /* ============================================
        NAVIGATION
        ============================================ */
     nav {
@@ -1142,6 +1159,8 @@
 </head>
 <body>
 
+  <img class="bg-serpent" id="bgSerpent" src="msh-serpent-logo.png" alt="" aria-hidden="true">
+
   <!-- ================================================
        NAVIGATION
   ================================================ -->
@@ -1902,6 +1921,26 @@
         nav.style.borderBottomColor = 'var(--border)';
       }
     });
+
+    /* ----- ROTATING BACKGROUND LOGO ----- */
+    const bgSerpent = document.getElementById('bgSerpent');
+    if (bgSerpent) {
+      let serpentTicking = false;
+      const degreesPerPixel = 0.12; // increase for a faster spin, decrease for slower
+
+      function updateSerpentRotation() {
+        const angle = window.scrollY * degreesPerPixel;
+        bgSerpent.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+        serpentTicking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!serpentTicking) {
+          requestAnimationFrame(updateSerpentRotation);
+          serpentTicking = true;
+        }
+      });
+    }
 
     /* ----- SMOOTH ANCHOR SCROLL ----- */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
