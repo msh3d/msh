@@ -18,13 +18,14 @@
     }
 
     [data-theme="dark"] {
-      --bg-base:        #0c0c0e;
-      --bg-surface:     #141416;
-      --bg-card:        #1a1a1e;
-      --bg-card-hover:  #202026;
-      --bg-glass:       rgba(20, 20, 22, 0.85);
-      --border:         rgba(255, 255, 255, 0.07);
-      --border-strong:  rgba(255, 255, 255, 0.14);
+      --bg-base-solid:  #0c0c0e;
+      --bg-base:        rgba(12, 12, 14, 0.5);
+      --bg-surface:     rgba(20, 20, 22, 0.42);
+      --bg-card:        rgba(26, 26, 30, 0.38);
+      --bg-card-hover:  rgba(32, 32, 38, 0.5);
+      --bg-glass:       rgba(20, 20, 22, 0.55);
+      --border:         rgba(255, 255, 255, 0.09);
+      --border-strong:  rgba(255, 255, 255, 0.16);
       --text-primary:   #f0ede8;
       --text-secondary: #8a8580;
       --text-muted:     #4a4845;
@@ -34,20 +35,21 @@
       --accent-glow:    rgba(201, 169, 110, 0.15);
       --shadow-card:    0 8px 40px rgba(0,0,0,0.5);
       --shadow-glow:    0 0 60px rgba(201,169,110,0.08);
-      --nav-bg:         rgba(12, 12, 14, 0.9);
-      --hero-overlay:   rgba(0,0,0,0.55);
+      --nav-bg:         rgba(12, 12, 14, 0.65);
+      --hero-overlay:   rgba(0,0,0,0.35);
       --tag-bg:         rgba(201,169,110,0.1);
       --tag-color:      #c9a96e;
     }
 
     [data-theme="light"] {
-      --bg-base:        #faf9f7;
-      --bg-surface:     #f4f2ee;
-      --bg-card:        #ffffff;
-      --bg-card-hover:  #f9f8f6;
-      --bg-glass:       rgba(250, 249, 247, 0.9);
-      --border:         rgba(0,0,0,0.07);
-      --border-strong:  rgba(0,0,0,0.13);
+      --bg-base-solid:  #faf9f7;
+      --bg-base:        rgba(250, 249, 247, 0.5);
+      --bg-surface:     rgba(244, 242, 238, 0.42);
+      --bg-card:        rgba(255, 255, 255, 0.4);
+      --bg-card-hover:  rgba(249, 248, 246, 0.55);
+      --bg-glass:       rgba(250, 249, 247, 0.6);
+      --border:         rgba(0,0,0,0.08);
+      --border-strong:  rgba(0,0,0,0.15);
       --text-primary:   #1a1714;
       --text-secondary: #6b6560;
       --text-muted:     #b5b0aa;
@@ -57,8 +59,8 @@
       --accent-glow:    rgba(154, 115, 64, 0.08);
       --shadow-card:    0 2px 20px rgba(0,0,0,0.08);
       --shadow-glow:    0 0 40px rgba(154,115,64,0.06);
-      --nav-bg:         rgba(250,249,247,0.92);
-      --hero-overlay:   rgba(0,0,0,0.45);
+      --nav-bg:         rgba(250,249,247,0.72);
+      --hero-overlay:   rgba(0,0,0,0.22);
       --tag-bg:         rgba(154,115,64,0.08);
       --tag-color:      #9a7340;
     }
@@ -72,7 +74,7 @@
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--bg-base);
+      background: var(--bg-base-solid);
       color: var(--text-primary);
       overflow-x: hidden;
       transition: var(--transition-theme);
@@ -83,7 +85,7 @@
        SCROLLBAR
        ============================================ */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-track { background: var(--bg-base-solid); }
     ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 2px; }
 
     /* ============================================
@@ -106,11 +108,11 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 700px;
+      width: 560px;
       max-width: none;
       height: auto;
       transform: translate(-50%, -50%) rotate(0deg);
-      opacity: 0.1;
+      opacity: 0.08;
       pointer-events: none;
       z-index: -1;
       will-change: transform;
@@ -264,7 +266,7 @@
 
     .hero-video-bg {
       position: absolute;
-      inset: 0;
+      top: 140px; right: 0; bottom: 0; left: 0;
       overflow: hidden;
       z-index: 0;
     }
@@ -275,7 +277,7 @@
       width: 160%; height: 160%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      filter: blur(12px) brightness(0.4) saturate(0.7);
+      filter: brightness(0.55) saturate(0.85);
     }
 
     .hero-overlay {
@@ -525,6 +527,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       background: var(--bg-card);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       border: 1px solid var(--border);
       transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       position: relative;
@@ -722,6 +726,8 @@
 
     .command-card {
       background: var(--bg-card);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: 20px 24px;
@@ -805,6 +811,8 @@
 
     .feature-item {
       background: var(--bg-base);
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
       padding: 56px 48px;
       text-align: center;
       position: relative;
@@ -860,6 +868,8 @@
 
     .pricing-card {
       background: var(--bg-card);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       border: 1px solid var(--border);
       padding: 56px 44px;
       text-align: center;
@@ -996,6 +1006,8 @@
 
     .contact-item {
       background: var(--bg-base);
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
       padding: 48px 36px;
       text-align: center;
       transition: background 0.3s;
