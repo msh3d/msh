@@ -29,8 +29,8 @@
       --bg-card:        rgba(26, 26, 30, 0.38);
       --bg-card-hover:  rgba(32, 32, 38, 0.5);
       --bg-glass:       rgba(20, 20, 22, 0.55);
-      --border:         rgba(255, 255, 255, 0.09);
-      --border-strong:  rgba(255, 255, 255, 0.16);
+      --border:         rgba(255, 255, 255, 0.14);
+      --border-strong:  rgba(255, 255, 255, 0.24);
       --text-primary:   #f0ede8;
       --text-secondary: #8a8580;
       --text-muted:     #4a4845;
@@ -53,8 +53,8 @@
       --bg-card:        rgba(255, 255, 255, 0.4);
       --bg-card-hover:  rgba(249, 248, 246, 0.55);
       --bg-glass:       rgba(250, 249, 247, 0.6);
-      --border:         rgba(0,0,0,0.08);
-      --border-strong:  rgba(0,0,0,0.15);
+      --border:         rgba(0,0,0,0.1);
+      --border-strong:  rgba(0,0,0,0.2);
       --text-primary:   #1a1714;
       --text-secondary: #6b6560;
       --text-muted:     #b5b0aa;
@@ -789,8 +789,8 @@
 
     .command-card {
       background: var(--bg-card);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 20px 24px;
@@ -1906,10 +1906,10 @@
       <div class="divider"></div>
     </div>
     <div class="video-wrapper reveal">
-      <video autoplay muted loop playsinline preload="metadata"
-             poster="assets/msh-demo-poster.jpg">
-        <source src="assets/msh-demo.mp4" type="video/mp4">
-      </video>
+      <iframe src="https://www.youtube.com/embed/8-JXkEX41_4?autoplay=1&mute=1&loop=1&playlist=8-JXkEX41_4&rel=0&modestbranding=1"
+              title="Modelling Studio HUB Demo" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </section>
 
