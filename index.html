@@ -107,6 +107,27 @@
     }
 
     /* ============================================
+       CURSOR SERPENT
+       ============================================ */
+    .cursor-serpent {
+      position: fixed;
+      top: 0; left: 0;
+      width: 44px;
+      max-width: none;
+      height: auto;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+      will-change: transform;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .cursor-serpent { display: none; }
+    }
+
+    /* ============================================
        AMBIENT BACKGROUND GRADIENT BLOBS
        ============================================ */
     .bg-atmosphere {
@@ -128,21 +149,21 @@
     .blob-1 {
       width: 560px; height: 560px;
       top: -140px; left: -120px;
-      background: radial-gradient(circle, var(--accent-gold) 0%, transparent 85%);
+      background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
       animation: floatBlob 24s ease-in-out infinite;
     }
 
     .blob-2 {
       width: 620px; height: 620px;
       bottom: -180px; right: -140px;
-      background: radial-gradient(circle, var(--accent-blue) 0%, transparent 85%);
+      background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
       animation: floatBlob 28s ease-in-out infinite reverse;
     }
 
     .blob-3 {
       width: 440px; height: 440px;
       top: 42%; left: 58%;
-      background: radial-gradient(circle, var(--accent-gold-lt) 0%, transparent 85%);
+      background: radial-gradient(circle, var(--accent-gold-lt) 0%, transparent 70%);
       animation: floatBlob 32s ease-in-out infinite;
     }
 
@@ -203,6 +224,8 @@
     .logo-mark {
       width: 28px;
       height: 28px;
+      object-fit: contain;
+      display: block;
     }
 
     .logo-text {
@@ -546,7 +569,7 @@
       position: absolute;
       inset: -1px;
       padding: 1px;
-      background: linear-gradient(135deg, var(--accent-gold) 0%, transparent 65%, var(--accent-gold) 100%);
+      background: linear-gradient(135deg, var(--accent-gold) 0%, transparent 50%, var(--accent-gold) 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
@@ -1256,6 +1279,7 @@
   </div>
 
   <img class="bg-serpent" id="bgSerpent" src="msh-serpent-logo.png" alt="" aria-hidden="true">
+  <img class="cursor-serpent" id="cursorSerpent" src="msh-serpent-logo.png" alt="" aria-hidden="true">
 
   <!-- ================================================
        NAVIGATION
@@ -1263,11 +1287,7 @@
   <nav>
     <div class="nav-container">
       <a href="#" class="logo">
-        <svg class="logo-mark" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="var(--accent-gold)" stroke-width="1.5" fill="none"/>
-          <polygon points="14,8 20,11 20,17 14,20 8,17 8,11" stroke="var(--accent-gold)" stroke-width="1" fill="none" opacity="0.5"/>
-          <circle cx="14" cy="14" r="2" fill="var(--accent-gold)"/>
-        </svg>
+        <img class="logo-mark" src="msh-serpent-logo.png" alt="MSH Studio">
         <span class="logo-text">MSH Studio</span>
       </a>
 
@@ -2036,6 +2056,46 @@
           serpentTicking = true;
         }
       });
+    }
+
+    /* ----- CURSOR SERPENT ----- */
+    const cursorSerpent = document.getElementById('cursorSerpent');
+    if (cursorSerpent
+        && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let mx = 0, my = 0, cx = 0, cy = 0;
+      let angle = 0, scale = 1, targetScale = 1;
+      let lastScroll = window.scrollY, seen = false;
+
+      window.addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        if (!seen) {
+          cx = mx; cy = my; seen = true;
+          cursorSerpent.style.opacity = '0.9';
+        }
+        targetScale = e.target.closest('a, button, input, textarea, select, label') ? 1.5 : 1;
+      }, { passive: true });
+
+      document.documentElement.addEventListener('mouseleave', () => { cursorSerpent.style.opacity = '0'; });
+      document.documentElement.addEventListener('mouseenter', () => { if (seen) cursorSerpent.style.opacity = '0.9'; });
+
+      (function tickCursorSerpent() {
+        const dx = mx - cx, dy = my - cy;
+        cx += dx * 0.18;
+        cy += dy * 0.18;
+
+        const sy = window.scrollY;
+        const scrollDelta = sy - lastScroll;
+        lastScroll = sy;
+
+        // slow idle drift + spin from pointer travel + spin from scrolling
+        angle += 0.15 + Math.hypot(dx, dy) * 0.25 + scrollDelta * 0.5;
+        scale += (targetScale - scale) * 0.15;
+
+        cursorSerpent.style.transform =
+          `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%) rotate(${angle}deg) scale(${scale})`;
+        requestAnimationFrame(tickCursorSerpent);
+      })();
     }
 
     /* ----- SMOOTH ANCHOR SCROLL ----- */
