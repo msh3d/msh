@@ -221,6 +221,33 @@
       text-decoration: none;
     }
 
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .rhino-compute-link {
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      border-left: 1px solid var(--border, rgba(128,128,128,0.3));
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .rhino-compute-link:hover { opacity: 1; }
+
+    .rhino-compute-link img {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .rhino-compute-link { display: none; }
+    }
+
     .logo-mark {
       width: 28px;
       height: 28px;
@@ -1840,10 +1867,15 @@
   ================================================ -->
   <nav>
     <div class="nav-container">
-      <a href="#" class="logo">
-        <img class="logo-mark" src="msh-serpent-logo.png" alt="MSH Studio">
-        <span class="logo-text">MSH Studio</span>
-      </a>
+      <div class="brand-group">
+        <a href="#" class="logo">
+          <img class="logo-mark" src="msh-serpent-logo.png" alt="MSH Studio">
+          <span class="logo-text">MSH Studio</span>
+        </a>
+        <a href="https://www.rhino3d.com" class="rhino-compute-link" target="_blank" rel="noopener noreferrer" aria-label="Rhino Compute">
+          <img src="rhino-compute-logo.svg" alt="Rhino Compute">
+        </a>
+      </div>
 
       <ul class="nav-links">
         <li><a href="#plugins">Plugins for Rhino 3D</a></li>
