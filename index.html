@@ -26,7 +26,7 @@
   <meta name="twitter:image" content="https://msh3d.github.io/msh/og-image.png">
   <link rel="apple-touch-icon" href="msh-serpent-logo.png">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "MSH Studio – Jewellery Plugins for Rhino 3D", "applicationCategory": "DesignApplication", "operatingSystem": "Windows", "softwareRequirements": "Rhino 8 for Windows", "softwareVersion": "7.0.0", "url": "https://msh3d.github.io/msh/", "description": "Professional Rhino 3D jewellery plugins: auto pavé, honeycomb azure cutters, smart sweep, metal weight reports and 8K capture. Built by a 12-year jewellery CAD designer.", "author": {"@type": "Person", "name": "Avanish"}, "offers": [{"@type": "Offer", "name": "Quarterly", "price": "14999", "priceCurrency": "INR", "url": "https://msh3d.github.io/msh/#pricing"}, {"@type": "Offer", "name": "Half-Yearly", "price": "29999", "priceCurrency": "INR", "url": "https://msh3d.github.io/msh/#pricing"}, {"@type": "Offer", "name": "Annual", "price": "49999", "priceCurrency": "INR", "url": "https://msh3d.github.io/msh/#pricing"}]}</script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "MSH 3D Studio", "url": "https://msh3d.github.io/msh/", "email": "msh3dstudio@gmail.com", "founder": {"@type": "Person", "name": "Avanish"}, "address": {"@type": "PostalAddress", "addressLocality": "Mumbai", "addressCountry": "IN"}, "sameAs": ["https://www.instagram.com/msh3dstudio/", "https://www.linkedin.com/company/msh3dstudio"], "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "email": "msh3dstudio@gmail.com", "telephone": "+91-9076290895", "availableLanguage": ["English", "Hindi"]}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "MSH 3D Studio", "url": "https://msh3d.github.io/msh/", "email": "msh3dstudio@gmail.com", "founder": {"@type": "Person", "name": "Avanish"}, "address": {"@type": "PostalAddress", "addressLocality": "Mumbai", "addressCountry": "IN"}, "sameAs": ["https://www.instagram.com/msh3dstudio/", "https://www.linkedin.com/company/msh3dstudio", "https://www.youtube.com/@MSH-3DSTUDIO", "https://www.food4rhino.com/en/app/msh-high-jewellery-modelling-studio-hub"], "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "email": "msh3dstudio@gmail.com", "telephone": "+91-9076290895", "availableLanguage": ["English", "Hindi"]}}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which Rhino versions are supported?", "acceptedAnswer": {"@type": "Answer", "text": "MSH Studio plugins support Rhino 8 for Windows. Rhino 9 compatibility is being evaluated; email us before purchasing if you need it."}}, {"@type": "Question", "name": "How does licensing work?", "acceptedAnswer": {"@type": "Answer", "text": "Each subscription is for a single user. You can choose a Cloud Zoo license, which can be shuffled between users, or an offline machine-locked license."}}, {"@type": "Question", "name": "Can I use it on 2 PCs?", "acceptedAnswer": {"@type": "Answer", "text": "A subscription covers one user. A Cloud Zoo license can be moved between users and machines on your account, while an offline license is locked to one computer. Contact us for multi-seat needs."}}, {"@type": "Question", "name": "How do I get a trial?", "acceptedAnswer": {"@type": "Answer", "text": "Request a free 15-day trial from the Start Free Trial page. The trial is verified using your Rhino serial number."}}, {"@type": "Question", "name": "How do I install the plugins?", "acceptedAnswer": {"@type": "Answer", "text": "Download the setup file, open it, and follow the on-screen instructions. Restart Rhino when the installer finishes."}}, {"@type": "Question", "name": "What is the refund policy?", "acceptedAnswer": {"@type": "Answer", "text": "There are no refunds after license activation, and a free trial is available before purchase. Billing errors and duplicate payments are refunded within 30 days."}}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1886,6 +1886,66 @@
     .demo-card .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.28);color:#fff;font-size:34px;transition:background .3s}
     .demo-card:hover .play{background:rgba(0,0,0,.1)}
     @media (max-width:900px){.demo-row{grid-template-columns:1fr}.about-card{padding:32px 24px}}
+    /* ===== FOOTER (organised) ===== */
+    footer{padding:72px 32px 88px}
+    .footer-wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:40px 32px;align-items:start}
+    .footer-brand .footer-logo{display:block;font-size:20px;margin-bottom:12px;color:var(--text-primary)}
+    .footer-tag{font-size:13px;line-height:1.7;color:var(--text-secondary);max-width:300px;margin-bottom:16px}
+    .footer-mail{display:block;font-size:13px;color:var(--text-secondary);text-decoration:none;margin-bottom:6px;transition:color .3s;overflow-wrap:anywhere}
+    .footer-mail:hover{color:var(--accent-gold)}
+    .footer-col h4{font-family:'DM Mono',monospace;font-size:11px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:16px}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .footer-col a{font-size:13px;color:var(--text-secondary);text-decoration:none;transition:color .3s}
+    .footer-col a:hover{color:var(--accent-gold)}
+    .footer-bottom{max-width:1200px;margin:48px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;font-size:12px;color:var(--text-secondary)}
+
+    /* ===== MOBILE MENU ===== */
+    .nav-burger{display:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--border-strong);background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0}
+    .nav-burger span{display:block;width:16px;height:1.5px;background:var(--text-secondary);transition:transform .3s,opacity .3s}
+    nav.open .nav-burger span:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+    nav.open .nav-burger span:nth-child(2){opacity:0}
+    nav.open .nav-burger span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+    .nav-menu-trial{display:none}
+    .nav-container{position:relative}
+
+    @media (max-width:1000px){
+      .footer-wrap{grid-template-columns:repeat(4,1fr)}
+      .footer-brand{grid-column:1/-1}
+    }
+    @media (max-width:700px){
+      .nav-burger{display:flex}
+      .nav-links{display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;align-items:stretch;gap:0;padding:8px;background:var(--bg-surface);border:1px solid var(--border-strong);border-radius:20px;box-shadow:var(--shadow-card);pointer-events:auto}
+      nav.open .nav-links{display:flex}
+      [data-theme="dark"] .nav-links{background:#131315!important}
+      [data-theme="light"] .nav-links{background:#fbfaf8!important}
+      .nav-links{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+      .nav-links li a{display:block;padding:14px 16px;font-size:13px;letter-spacing:.06em;border-radius:12px}
+      .nav-links li a:hover{background:var(--bg-card)}
+      .nav-menu-trial{display:block}
+      .nav-menu-trial a{color:var(--accent-gold)!important}
+      .nav-trial{display:none}
+      .footer-wrap{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:600px){
+      html{-webkit-text-size-adjust:100%}
+      section:not(.hero){padding-left:20px!important;padding-right:20px!important;padding-top:80px!important;padding-bottom:80px!important}
+      .hero{padding:96px 20px 64px!important}
+      .hero-title{font-size:clamp(38px,12vw,56px)!important}
+      .plugin-content{padding:32px 22px!important}
+      .pricing-card{padding:32px 22px!important}
+      .about-section,.faq-section{padding:80px 20px!important}
+      .faq-list details{padding:16px 18px}
+      .trust-chip{font-size:10px;padding:8px 12px}
+      .about-links{gap:12px 18px}
+      .footer-bottom{flex-direction:column}
+      footer{padding:56px 20px 96px}
+      .logo-text{font-size:15px}
+      .nav-container{padding:0 8px 0 14px!important}
+    }
+    @media (max-width:360px){
+      .footer-wrap{grid-template-columns:1fr}
+    }
+    img,video,iframe{max-width:100%}
   </style>
 </head>
 <body>
@@ -1928,17 +1988,19 @@
         </a>
       </div>
 
-      <ul class="nav-links">
+      <ul class="nav-links" id="navLinks">
         <li><a href="#plugins">Plugins for Rhino 3D</a></li>
         <li><a href="#commands">Commands</a></li>
         <li><a href="#jewelkit">Jewelkit</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li class="nav-menu-trial"><a href="trial-license.html">Start Free Trial</a></li>
       </ul>
 
       <div class="nav-actions">
         <a href="trial-license.html" class="nav-trial">Start Free Trial</a>
+        <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <!-- Sun -->
           <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1968,7 +2030,7 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow"> MSH 3D STUDIO · The Professional Jewellery Suite</p>
+      <p class="hero-eyebrow"> · The Professional Jewellery Suite</p>
       <h1 class="hero-title">Design Jewellery<br><em>Faster &amp; Smarter</em></h1>
       <p class="hero-subtitle">Speed of automation. Soul of a designer.</p>
       <p class="hero-desc">The native command center for Rhino that understands jewellery. From gradient pavé and honeycomb cutters to 8K pro capture and automated metal reports — built by a working jewellery CAD designer over 12 years. Every tool solves a real problem.</p>
@@ -2800,6 +2862,8 @@
         <a href="https://wa.me/919076290895" target="_blank" rel="noopener noreferrer">WhatsApp +91 90762 90895</a>
         <a href="https://www.instagram.com/msh3dstudio/" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://www.linkedin.com/company/msh3dstudio" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.youtube.com/@MSH-3DSTUDIO" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a href="https://www.food4rhino.com/en/app/msh-high-jewellery-modelling-studio-hub" target="_blank" rel="noopener noreferrer">Food4Rhino</a>
         <a href="about.html">About</a>
         <a href="changelog.html">Changelog (v7.0.0)</a>
       </div>
@@ -2871,20 +2935,53 @@
        FOOTER
   ================================================ -->
   <footer>
-    <div class="footer-inner">
-      <span class="footer-logo">Modelling Studio HUB</span>
-      <span class="footer-text">© 2026 MSH 3D Studio, Mumbai. Designed for 3D professionals worldwide.</span>
-      <ul class="footer-links">
-        <li><a href="https://www.instagram.com/msh3dstudio/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        <li><a href="https://www.linkedin.com/company/msh3dstudio" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="changelog.html">Changelog</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Service</a></li>
-        <li><a href="refund.html">Refund Policy</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+    <div class="footer-wrap">
+      <div class="footer-brand">
+        <span class="footer-logo">MSH Studio</span>
+        <p class="footer-tag">Jewellery plugins for Rhino 3D. Built in Mumbai by a working jewellery designer.</p>
+        <a class="footer-mail" href="mailto:msh3dstudio@gmail.com">msh3dstudio@gmail.com</a>
+        <a class="footer-mail" href="https://wa.me/919076290895" target="_blank" rel="noopener noreferrer">WhatsApp +91 90762 90895</a>
+      </div>
+      <div class="footer-col" role="navigation" aria-label="Product">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#plugins">Plugins</a></li>
+          <li><a href="#commands">Commands</a></li>
+          <li><a href="#jewelkit">Jewelkit</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="trial-license.html">Free Trial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" role="navigation" aria-label="Company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" role="navigation" aria-label="Legal">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" role="navigation" aria-label="Follow">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.youtube.com/@MSH-3DSTUDIO" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://www.instagram.com/msh3dstudio/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/company/msh3dstudio" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.food4rhino.com/en/app/msh-high-jewellery-modelling-studio-hub" target="_blank" rel="noopener noreferrer">Food4Rhino</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MSH 3D Studio, Mumbai, India.</span>
+      <span>Rhino is a trademark of Robert McNeel &amp; Associates.</span>
     </div>
   </footer>
 
@@ -2918,6 +3015,12 @@
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+
+
+    /* ----- MOBILE MENU ----- */
+    const navEl=document.querySelector('nav'),burger=document.getElementById('navBurger');
+    burger.addEventListener('click',()=>{const o=navEl.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.setAttribute('aria-label',o?'Close menu':'Open menu');});
+    document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>{navEl.classList.remove('open');burger.setAttribute('aria-expanded','false');}));
 
     /* ----- CLICK-TO-LOAD DEMO VIDEOS ----- */
     document.querySelectorAll('.demo-card').forEach(b=>b.addEventListener('click',()=>{
